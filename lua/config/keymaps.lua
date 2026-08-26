@@ -63,11 +63,14 @@ vim.keymap.set({ "n", "v" }, "<leader>h", function()
   -- Check if an alpha buffer is already visible
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if vim.bo[buf].filetype == "alpha" and vim.api.nvim_buf_is_valid(buf) then
-      local wins = vim.fn.bufwinid(buf)
+      local wins = vim.fn.win_findbuf(buf)
       if #wins > 0 then
-        -- Alpha is visible — close all its windows
+        -- Alpha is visible — switch away first, then close its windows
+        vim.cmd("bprevious")
         for _, win in ipairs(wins) do
-          vim.api.nvim_win_close(win, true)
+          if vim.api.nvim_win_is_valid(win) then
+            pcall(vim.api.nvim_win_close, win, true)
+          end
         end
         return
       end
