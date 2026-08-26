@@ -1,97 +1,709 @@
-🧠 DopaVim
+# 🧠 DopaVim
 
-    A Blade Runner–inspired Neovim distribution
-    Built on LazyVim, fueled by Dopamine.
+> **A Blade Runner--inspired Neovim distribution for people who actually
+> want to enjoy using their editor.**\
+> *Built on LazyVim. Personalized from the ground up. Fueled by
+> Dopamine.*
 
-https://img.shields.io/badge/Neovim-0.9+-57A143?style=flat&logo=neovim&logoColor=white
-https://img.shields.io/badge/LazyVim-11.0-ff69b4?style=flat&logo=lazyvim
-https://img.shields.io/github/license/musaeed178-uio/nvim-config?style=flat
-📖 About
+[![Neovim](https://img.shields.io/badge/Neovim-0.12.4-57A143?style=flat&logo=neovim&logoColor=white)](https://neovim.io/)
+[![LazyVim](https://img.shields.io/badge/LazyVim-11.0-ff69b4?style=flat&logo=lazyvim)](https://www.lazyvim.org/)
+[![License](https://img.shields.io/github/license/musaeed178-uio/nvim-config?style=flat)](https://github.com/musaeed178-uio/nvim-config/blob/main/LICENSE)
 
-DopaVim is my personal Neovim configuration – a carefully crafted environment that combines the rock‑solid foundation of LazyVim with my own flavour of cyberpunk aesthetics, ergonomic keymaps, and a dash of dopamine.
+------------------------------------------------------------------------
 
-It’s not just a config; it’s a daily driver that makes editing feel fluid, intuitive, and – dare I say – joyful.
-✨ Features
+## 📖 What is DopaVim?
 
-    🚀 LazyVim Core – modular, fast, and extensible.
+**DopaVim** is my personal Neovim environment, built on top of
+**LazyVim** and shaped through a lot of experimentation, debugging,
+rebuilding, and customization.
 
-    🎨 Neofusion Theme – a dark, vibrant colourscheme with a neon vibe.
+The goal was never to create another "minimal Neovim config."
 
-    🖥️ Floating Terminals – quick access to PowerShell (<M-i>) and CMD (<M-c>), both with titles, smooth borders, and Esc to normal mode.
+The goal was to build an editor that feels **mine**.
 
-    📂 Oil.nvim – file explorer in a floating window (-).
+DopaVim combines:
 
-    🔍 Telescope – fuzzy finder for files, buffers, plugins, and sessions.
+-   a solid LazyVim foundation
+-   a dark cyberpunk / Blade Runner-inspired aesthetic
+-   fast navigation and fuzzy finding
+-   floating terminals
+-   a practical file-management workflow
+-   custom dashboard and session workflows
+-   carefully chosen plugins
+-   personalized keymaps
+-   a setup optimized around my actual day-to-day development
 
-    💾 Session Management – restore last session (s) or choose from saved sessions (S) right from the dashboard.
+I use Neovim as more than a text editor. It is the place where I work on
+university projects, programming experiments, AI/ML learning,
+system-level experiments, and larger personal projects.
 
-    ⚡ Blink.cmp – super‑fast completion.
+So DopaVim is intentionally opinionated.
 
-    🧠 Lazy Extras – easily toggle features with the x button.
+It is not designed to satisfy everyone.
 
-    🔧 Custom Keymaps – buffer navigation, split management, delete‑without‑yank, and more.
+**It is designed to make me want to open Neovim.**
 
-    📊 Live Dashboard – shows time, date, plugin count, and startup time.
+------------------------------------------------------------------------
 
-🖼️ Screenshots
+## ⚡ Philosophy
 
-https://via.placeholder.com/800x400?text=Dashboard+Preview
-Replace with an actual screenshot of your Alpha dashboard.
+DopaVim follows a few simple principles:
 
-https://via.placeholder.com/800x400?text=Terminals+Preview
-PowerShell (left) and CMD (right) floating windows.
-📦 Installation
-Prerequisites
+### 1. Build on a strong foundation
 
-    Neovim >= 0.9.0
+There is no reason to reinvent everything.
 
-    Git
+LazyVim already solves a huge amount of the difficult infrastructure:
+plugin management, sensible defaults, LSP integration, completion,
+Treesitter, Git tooling, and much more.
 
-    A Nerd Font (e.g., JetBrains Mono Nerd Font)
+DopaVim builds **on top of that foundation** instead of replacing it.
 
-Steps
+### 2. Customize what actually matters
 
-    Backup your existing config (if any):
-    mv ~/AppData/Local/nvim ~/AppData/Local/nvim.bak
-    mv ~/AppData/Local/nvim-data ~/AppData/Local/nvim-data.bak
+Not every option needs to be changed.
 
-    Clone this repository:
-    git clone https://github.com/musaeed178-uio/nvim-config.git ~/AppData/Local/nvim
+The configuration focuses on things that affect everyday interaction:
 
-    Start Neovim:
-    nvim
+-   navigation
+-   terminals
+-   files
+-   dashboards
+-   sessions
+-   appearance
+-   keymaps
+-   workflow shortcuts
 
-    Lazy will automatically install all plugins. Wait for it to finish.
+### 3. Function first, aesthetics second
 
-    (Optional) Run :Lazy sync to ensure everything is up‑to‑date.
+The cyberpunk aesthetic is important because the editor should be
+enjoyable to look at.
 
-🛠️ Customization
+But aesthetics never replace usability.
 
-    Keymaps: edit lua/config/keymaps.lua.
+Every customization has to earn its place.
 
-    Options: tweak lua/config/options.lua.
+### 4. Keep the workflow fast
 
-    Plugins: add or override in lua/plugins/.
+The ideal workflow is:
 
-    Dashboard: modify lua/plugins/dashboard.lua to change buttons, header, or footer.
+> **think → type → navigate → run → inspect → repeat**
 
-    Terminals: adjust size, title, or shell in lua/custom/terminal.lua and lua/custom/cmd_terminal.lua.
+The editor should stay out of the way.
 
-🙏 Credits
+------------------------------------------------------------------------
 
-    LazyVim – the brilliant foundation that makes all this possible.
+# ✨ Features
 
-    Neofusion – the theme that gives DopaVim its soul.
+## 🚀 LazyVim Foundation
 
-    All the amazing plugin authors whose work I’ve built upon.
+DopaVim uses **LazyVim** as its core.
 
-📄 License
+This provides a mature base for:
 
-This configuration is released under the GNU Affero General Public License v3.0 – because sharing is caring, and freedom matters.
-💬 Feedback & Contributions
+-   lazy-loaded plugins
+-   LSP
+-   Treesitter
+-   completion
+-   formatting
+-   Git integration
+-   Telescope
+-   diagnostics
+-   sensible defaults
+-   plugin management
 
-If you find a bug or have a suggestion, feel free to open an issue or submit a pull request.
-I’m always open to learning new tricks!
+The custom configuration only overrides or extends what I actually want
+to change.
 
-Made with ☕, 🧠, and a lot of Dopamine.
-— musaeed178-uio
+------------------------------------------------------------------------
+
+## 🎨 Neofusion Theme
+
+DopaVim uses **Neofusion** as its primary colorscheme.
+
+The visual direction is intentionally dark, vibrant, and slightly
+futuristic.
+
+The aesthetic is inspired by the atmosphere of:
+
+-   Blade Runner
+-   cyberpunk interfaces
+-   terminal environments
+-   neon-lit cityscapes
+-   dark developer tooling
+
+The editor should feel like a workstation rather than a generic text
+editor.
+
+------------------------------------------------------------------------
+
+## 🖥️ Floating Terminals
+
+DopaVim provides quick floating terminal access for Windows shells.
+
+The terminal workflow is designed around the environment I actually use,
+particularly **PowerShell**.
+
+Terminal shortcuts are intended to make running commands, checking
+builds, testing scripts, and interacting with projects require almost no
+friction.
+
+The setup also keeps terminal behavior visually consistent with the rest
+of the editor.
+
+------------------------------------------------------------------------
+
+## 📂 Oil.nvim
+
+**Oil.nvim** provides the file-management workflow.
+
+The parent directory can be opened directly with:
+
+``` text
+-
+```
+
+Oil is used instead of relying exclusively on a traditional tree-based
+file explorer.
+
+This keeps filesystem operations closer to the actual editing workflow.
+
+------------------------------------------------------------------------
+
+## 🔍 Telescope
+
+Telescope is used throughout DopaVim for fast fuzzy searching.
+
+It provides quick access to things such as:
+
+-   files
+-   buffers
+-   recent files
+-   live grep
+-   Git information
+-   plugins
+-   sessions
+-   project content
+
+The intention is simple:
+
+> **If I know roughly what I'm looking for, I shouldn't have to manually
+> navigate to it.**
+
+------------------------------------------------------------------------
+
+## 💾 Session Management
+
+DopaVim makes project/session restoration part of the dashboard
+workflow.
+
+The dashboard provides quick access to:
+
+-   restoring the previous session
+-   selecting from saved sessions
+-   starting a fresh editing environment
+
+This is particularly useful when switching between multiple university
+and personal projects.
+
+------------------------------------------------------------------------
+
+## ⚡ Blink.cmp
+
+DopaVim uses **Blink.cmp** for completion.
+
+The goal is fast, unobtrusive completion without turning the editor into
+a giant autocomplete interface.
+
+------------------------------------------------------------------------
+
+## 🧠 Lazy Extras
+
+LazyVim's extras system is retained.
+
+This means additional functionality can be enabled when needed without
+permanently bloating the core configuration.
+
+The philosophy is:
+
+> **Use what is useful. Disable what isn't.**
+
+------------------------------------------------------------------------
+
+## 🛠️ Custom Keymaps
+
+The default keymaps are extended with mappings designed around my own
+workflow.
+
+Examples include shortcuts for:
+
+-   file navigation
+-   dashboard access
+-   terminal access
+-   buffer management
+-   split navigation
+-   formatting
+-   searching
+-   deleting without polluting the yank register
+-   common editor actions
+
+The configuration intentionally favors muscle memory and short command
+sequences over memorizing long command names.
+
+------------------------------------------------------------------------
+
+## 🏠 Custom Dashboard
+
+The dashboard is one of the most visible parts of DopaVim.
+
+It acts as the editor's starting point rather than simply displaying an
+empty buffer.
+
+The dashboard is designed around a personalized cyberpunk aesthetic and
+provides quick access to common workflows such as:
+
+-   recent files
+-   file search
+-   project navigation
+-   configuration
+-   sessions
+-   plugin management
+-   quitting
+
+It also provides runtime information such as:
+
+-   current time/date
+-   plugin information
+-   startup time
+
+The dashboard is meant to feel like a **control panel for the editor**.
+
+------------------------------------------------------------------------
+
+# 🧰 Tech Stack
+
+DopaVim currently revolves around:
+
+  Component          Role
+  ------------------ -----------------------------
+  **Neovim**         Editor
+  **LazyVim**        Base distribution
+  **lazy.nvim**      Plugin manager
+  **Neofusion**      Colorscheme
+  **Blink.cmp**      Completion
+  **Telescope**      Fuzzy finding
+  **Oil.nvim**       File management
+  **Treesitter**     Syntax parsing/highlighting
+  **LSP**            Language intelligence
+  **Conform.nvim**   Formatting
+  **Git tooling**    Version-control workflow
+
+The exact plugin set can evolve as the configuration evolves.
+
+------------------------------------------------------------------------
+
+# 🗂️ Configuration Structure
+
+The configuration follows LazyVim's modular structure.
+
+A simplified view:
+
+``` text
+nvim/
+├── init.lua
+├── lazy-lock.json
+│
+├── lua/
+│   ├── config/
+│   │   ├── autocmds.lua
+│   │   ├── keymaps.lua
+│   │   ├── lazy.lua
+│   │   └── options.lua
+│   │
+│   └── plugins/
+│       ├── ...
+│       └── custom plugin overrides
+│
+└── README.md
+```
+
+The important distinction is that DopaVim does **not** replace LazyVim's
+architecture.
+
+It extends it.
+
+That makes the configuration easier to maintain while still allowing
+extensive personalization.
+
+------------------------------------------------------------------------
+
+# ⌨️ Workflow
+
+DopaVim is built around a keyboard-first workflow.
+
+The general interaction model is:
+
+``` text
+Dashboard
+   │
+   ├── Find files ────────> Telescope
+   │
+   ├── Browse filesystem ─> Oil
+   │
+   ├── Recent files ──────> Telescope
+   │
+   ├── Sessions ──────────> Session manager
+   │
+   ├── Terminal ──────────> PowerShell / shell
+   │
+   └── Configuration ─────> Neovim config
+```
+
+The objective is to minimize context switching between:
+
+-   editor
+-   file manager
+-   terminal
+-   project search
+-   Git
+-   configuration
+
+Everything should be reachable from the keyboard.
+
+------------------------------------------------------------------------
+
+# 🖼️ Screenshots
+
+> Screenshots will be added here as the configuration stabilizes.
+
+### Dashboard
+
+``` text
+TODO: Add dashboard screenshot
+```
+
+### Floating Terminal
+
+``` text
+TODO: Add terminal screenshot
+```
+
+### Oil / File Management
+
+``` text
+TODO: Add Oil screenshot
+```
+
+------------------------------------------------------------------------
+
+# 📦 Installation
+
+## Prerequisites
+
+-   **Neovim 0.12.4** or newer
+-   **Git**
+-   A **Nerd Font**
+-   Windows environment with PowerShell if the terminal configuration is
+    to be reproduced exactly
+
+A Nerd Font such as **JetBrains Mono Nerd Font** is recommended.
+
+------------------------------------------------------------------------
+
+## Windows Installation
+
+### 1. Back up an existing configuration
+
+If Neovim is already configured:
+
+``` powershell
+Rename-Item "$env:LOCALAPPDATA\nvim" "$env:LOCALAPPDATA\nvim.bak"
+Rename-Item "$env:LOCALAPPDATA\nvim-data" "$env:LOCALAPPDATA\nvim-data.bak"
+```
+
+> Back up anything you want to keep before running these commands.
+
+### 2. Clone DopaVim
+
+``` powershell
+git clone https://github.com/musaeed178-uio/nvim-config.git "$env:LOCALAPPDATA\nvim"
+```
+
+### 3. Start Neovim
+
+``` powershell
+nvim
+```
+
+Lazy.nvim should bootstrap the required plugins automatically.
+
+Allow the initial installation to finish.
+
+### 4. Synchronize plugins if necessary
+
+Inside Neovim:
+
+``` vim
+:Lazy sync
+```
+
+------------------------------------------------------------------------
+
+# ⚙️ Customization
+
+DopaVim is meant to be customized.
+
+### Keymaps
+
+Edit:
+
+``` text
+lua/config/keymaps.lua
+```
+
+This is where personal keyboard behavior lives.
+
+### Options
+
+Edit:
+
+``` text
+lua/config/options.lua
+```
+
+Use this for editor-level options and behavior.
+
+### Plugins
+
+Add or override plugins inside:
+
+``` text
+lua/plugins/
+```
+
+LazyVim's plugin-spec architecture makes it possible to modify existing
+plugins without rewriting their entire configuration.
+
+### Dashboard
+
+Dashboard behavior and appearance can be modified through the relevant
+plugin configuration under:
+
+``` text
+lua/plugins/
+```
+
+### Terminal configuration
+
+Terminal behavior can be customized through the terminal-related
+configuration under:
+
+``` text
+lua/
+```
+
+The exact implementation may evolve as the configuration changes.
+
+------------------------------------------------------------------------
+
+# 🧪 Development Philosophy
+
+DopaVim is not intended to be a frozen configuration.
+
+It is a living environment.
+
+New plugins may be added.
+
+Old plugins may be removed.
+
+Keymaps may change.
+
+Themes may change.
+
+Parts of the configuration may be rewritten when a better approach is
+found.
+
+The important thing is that the configuration remains understandable and
+useful.
+
+This is also a learning project.
+
+Working on DopaVim has been a practical way to understand:
+
+-   Lua
+-   Neovim's architecture
+-   plugin specifications
+-   lazy loading
+-   LSP
+-   Treesitter
+-   terminal integration
+-   keymap systems
+-   Git workflows
+-   editor automation
+
+Rather than treating Neovim as a black box, the goal is to gradually
+understand the machinery underneath it.
+
+------------------------------------------------------------------------
+
+# 🧠 Why "DopaVim"?
+
+The name comes from the idea behind the entire setup:
+
+> **The editor should make you want to use it.**
+
+Good tooling creates a feedback loop.
+
+A command feels satisfying.
+
+Navigation is immediate.
+
+The interface looks good.
+
+The terminal is one shortcut away.
+
+A file appears exactly when expected.
+
+A project opens exactly where it was left.
+
+Small improvements compound.
+
+That feeling is the point.
+
+Hence:
+
+**DopaVim.**
+
+------------------------------------------------------------------------
+
+# 🎬 Inspiration
+
+The visual identity is heavily influenced by the atmosphere of **Blade
+Runner** and cyberpunk computing:
+
+-   dark environments
+-   neon accents
+-   terminal interfaces
+-   futuristic workstations
+-   dense information displays
+-   minimal but deliberate visual noise
+
+The aim isn't to reproduce a movie interface literally.
+
+It is to capture the feeling of sitting in a futuristic workstation and
+actually getting work done.
+
+------------------------------------------------------------------------
+
+# 🧑‍💻 About the Author
+
+**Muhammad Umar Saeed**
+
+Computer Science student and developer interested in:
+
+-   software engineering
+-   AI engineering
+-   Python
+-   C++
+-   Java
+-   databases
+-   MongoDB and NoSQL systems
+-   systems programming
+-   Linux and Windows tooling
+-   Neovim
+-   developer tooling
+-   automation
+-   open-source software
+
+Projects and experiments range from university software systems to AI/ML
+learning projects, POS/inventory systems, routing simulations, and
+system-level experimentation.
+
+DopaVim is one of those projects where the tooling itself becomes part
+of the learning process.
+
+------------------------------------------------------------------------
+
+# 🙏 Credits
+
+DopaVim stands on the work of many open-source developers.
+
+Special thanks to:
+
+-   [**LazyVim**](https://github.com/LazyVim/LazyVim) --- the foundation
+    of the configuration.
+-   [**Neovim**](https://github.com/neovim/neovim) --- the editor that
+    makes this entire ecosystem possible.
+-   [**Neofusion**](https://github.com/diegoulloao/neofusion.nvim) ---
+    the visual identity and colorscheme.
+-   [**Oil.nvim**](https://github.com/stevearc/oil.nvim) --- filesystem
+    editing.
+-   [**Telescope.nvim**](https://github.com/nvim-telescope/telescope.nvim)
+    --- fuzzy finding.
+-   [**Blink.cmp**](https://github.com/saghen/blink.cmp) --- completion.
+-   The developers and maintainers of every plugin used by this
+    configuration.
+
+Open-source tooling is what makes projects like this possible.
+
+------------------------------------------------------------------------
+
+# 📄 License
+
+This configuration is released under the **GNU Affero General Public
+License v3.0**.
+
+See:
+
+``` text
+LICENSE
+```
+
+for the complete license text.
+
+------------------------------------------------------------------------
+
+# 💬 Feedback & Contributions
+
+DopaVim is primarily a personal configuration, but feedback, ideas, bug
+reports, and improvements are welcome.
+
+If you find something broken or have an idea that genuinely improves the
+workflow:
+
+-   open an issue
+-   submit a pull request
+-   or simply share the idea
+
+The configuration is constantly evolving.
+
+------------------------------------------------------------------------
+
+# ⚠️ Disclaimer
+
+DopaVim is a **personal Neovim configuration**, not a general-purpose
+Neovim distribution.
+
+Some decisions are intentionally opinionated and may reflect:
+
+-   Windows-specific workflows
+-   PowerShell
+-   personal keymaps
+-   personal aesthetics
+-   personal plugin preferences
+-   my own development habits
+
+If you clone it, expect to modify it.
+
+That is part of the point.
+
+------------------------------------------------------------------------
+
+::: {align="center"}
+**Made with ☕, 🧠, Lua, Git, and a frankly unnecessary amount of
+customization.**
+
+### *Built on LazyVim. Fueled by Dopamine.*
+
+**--- Muhammad Umar Saeed**
+:::
