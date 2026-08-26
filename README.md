@@ -9,6 +9,16 @@
 [![LazyVim](https://img.shields.io/badge/LazyVim-11.0-ff69b4?style=flat&logo=lazyvim)](https://www.lazyvim.org/)
 [![License](https://img.shields.io/github/license/musaeed178-uio/nvim-config?style=flat)](https://github.com/musaeed178-uio/nvim-config/blob/main/LICENSE)
 
+```
+  ██████╗  ██████╗ ██████╗  █████╗ ██╗   ██╗██╗███╗   ███╗
+  ██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██║   ██║██║████╗ ████║
+  ██║  ██║██║   ██║██████╔╝███████║██║   ██║██║██╔████╔██║
+  ██║  ██║██║   ██║██╔═══╝ ██╔══██║╚██╗ ██╔╝██║██║╚██╔╝██║
+  ██████╔╝╚██████╔╝██║     ██║  ██║ ╚████╔╝ ██║██║ ╚═╝ ██║
+  ╚═════╝  ╚═════╝ ╚═╝     ╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═╝     ╚═╝
+                          Powered by Dopamine
+```
+
 ------------------------------------------------------------------------
 
 ## 📖 What is DopaVim?
@@ -29,6 +39,8 @@ DopaVim combines:
 -   floating terminals
 -   a practical file-management workflow
 -   custom dashboard and session workflows
+-   project management with project.nvim
+-   theme persistence across sessions
 -   carefully chosen plugins
 -   personalized keymaps
 -   a setup optimized around my actual day-to-day development
@@ -137,6 +149,10 @@ Switching themes is built into LazyVim. Open the extras picker with:
 This opens the **LazyVim Colorscheme** selector, where you can browse
 and preview all available themes in real time.
 
+**Theme persistence** is enabled by default. Your last chosen theme is
+automatically saved and restored on the next startup — no need to
+re-select it every time.
+
 The visual direction across all themes is intentionally dark, vibrant,
 and slightly futuristic — inspired by Blade Runner, cyberpunk
 interfaces, terminal environments, neon-lit cityscapes, and dark
@@ -148,9 +164,12 @@ developer tooling.
 
 DopaVim provides quick floating terminal access for Windows shells.
 
-The terminal workflow is designed around the environment I actually use,
-particularly **PowerShell**.
+Two independent terminal sessions are available:
 
+-   **Alt+i** — PowerShell (floating, 70% width)
+-   **Alt+c** — CMD (floating, 65% width)
+
+Both terminals automatically `cd` to the current buffer's directory.
 Terminal shortcuts are intended to make running commands, checking
 builds, testing scripts, and interacting with projects require almost no
 friction.
@@ -190,12 +209,29 @@ It provides quick access to things such as:
 -   Git information
 -   plugins
 -   sessions
+-   projects
 -   project content
 
 The intention is simple:
 
 > **If I know roughly what I'm looking for, I shouldn't have to manually
 > navigate to it.**
+
+------------------------------------------------------------------------
+
+## 📁 Projects
+
+DopaVim integrates **project.nvim** for tracking recent project
+directories.
+
+Projects are accessible from:
+
+-   the **dashboard** (Projects button)
+-   **Telescope** via the projects extension
+
+To register a project, open any project folder and run `:ProjectRoot`.
+That directory will appear in the projects picker for quick access in
+future sessions.
 
 ------------------------------------------------------------------------
 
@@ -245,11 +281,10 @@ workflow.
 Examples include shortcuts for:
 
 -   file navigation
--   dashboard access
--   terminal access
--   buffer management
--   split navigation
--   formatting
+-   dashboard toggle (`<leader>h`)
+-   terminal access (`Alt+i`, `Alt+c`)
+-   buffer navigation (`<leader>1-9`)
+-   splits (`<leader>sv`, `<leader>sh`)
 -   searching
 -   deleting without polluting the yank register
 -   common editor actions
@@ -266,22 +301,30 @@ The dashboard is one of the most visible parts of DopaVim.
 It acts as the editor's starting point rather than simply displaying an
 empty buffer.
 
-The dashboard is designed around a personalized cyberpunk aesthetic and
-provides quick access to common workflows such as:
+The dashboard features:
 
--   recent files
--   file search
--   project navigation
--   configuration
--   sessions
--   plugin management
--   quitting
+-   a custom **block-character ASCII logo** with per-line gradient
+    highlighting (pink → purple → blue)
+-   a **live clock** that updates every second
+-   CWD display showing the current working directory
+-   Neovim version, plugin count, and startup time
 
-It also provides runtime information such as:
+**Dashboard buttons:**
 
--   current time/date
--   plugin information
--   startup time
+| Key | Action                       |
+| --- | ---------------------------- |
+| `f` | Browse Files (Telescope)     |
+| `o` | Browse Files (Oil)           |
+| `p` | Projects (project.nvim)      |
+| `r` | Recent Files                 |
+| `c` | Configuration (Oil)          |
+| `l` | Lazy (plugin manager)        |
+| `m` | Mason (LSP installer)        |
+| `s` | Restore Session              |
+| `S` | Sessions picker              |
+| `x` | LazyVim Extras               |
+| `h` | Health check                 |
+| `q` | Quit                         |
 
 The dashboard is meant to feel like a **control panel for the editor**.
 
@@ -291,19 +334,21 @@ The dashboard is meant to feel like a **control panel for the editor**.
 
 DopaVim currently revolves around:
 
-  Component          Role
-  ------------------ -----------------------------
-  **Neovim**         Editor
-  **LazyVim**        Base distribution
-  **lazy.nvim**      Plugin manager
-  **SilkCircuit**    Colorscheme (default, 5 variants)
-  **Blink.cmp**      Completion
-  **Telescope**      Fuzzy finding
-  **Oil.nvim**       File management
-  **Treesitter**     Syntax parsing/highlighting
-  **LSP**            Language intelligence
-  **Conform.nvim**   Formatting
-  **Git tooling**    Version-control workflow
+  Component            Role
+  -------------------- -----------------------------
+  **Neovim**           Editor
+  **LazyVim**          Base distribution
+  **lazy.nvim**        Plugin manager
+  **SilkCircuit**      Colorscheme (default, 5 variants)
+  **Blink.cmp**        Completion
+  **Telescope**        Fuzzy finding
+  **Oil.nvim**         File management
+  **project.nvim**     Project management
+  **alpha-nvim**       Dashboard
+  **Treesitter**       Syntax parsing/highlighting
+  **LSP**              Language intelligence
+  **Conform.nvim**     Formatting
+  **Git tooling**      Version-control workflow
 
 The exact plugin set can evolve as the configuration evolves.
 
@@ -312,8 +357,6 @@ The exact plugin set can evolve as the configuration evolves.
 # 🗂️ Configuration Structure
 
 The configuration follows LazyVim's modular structure.
-
-A simplified view:
 
 ``` text
 nvim/
@@ -327,9 +370,20 @@ nvim/
 │   │   ├── lazy.lua
 │   │   └── options.lua
 │   │
+│   ├── custom/
+│   │   ├── terminal.lua          -- PowerShell floating terminal
+│   │   ├── cmd_terminal.lua      -- CMD floating terminal
+│   │   └── theme_persistence.lua -- Save/restore last theme
+│   │
 │   └── plugins/
-│       ├── ...
-│       └── custom plugin overrides
+│       ├── browse-telescope.lua
+│       ├── dashboard.lua
+│       ├── lsp.lua
+│       ├── lint.lua
+│       ├── oil.lua
+│       ├── project.lua           -- project.nvim integration
+│       ├── theme.lua
+│       └── treesitter.lua
 │
 └── README.md
 ```
@@ -353,16 +407,11 @@ The general interaction model is:
 ``` text
 Dashboard
    │
-   ├── Find files ────────> Telescope
-   │
-   ├── Browse filesystem ─> Oil
-   │
+   ├── Browse Files ──────> Telescope / Oil
+   ├── Projects ──────────> project.nvim
    ├── Recent files ──────> Telescope
-   │
    ├── Sessions ──────────> Session manager
-   │
-   ├── Terminal ──────────> PowerShell / shell
-   │
+   ├── Terminal ──────────> PowerShell / CMD
    └── Configuration ─────> Neovim config
 ```
 
@@ -376,30 +425,6 @@ The objective is to minimize context switching between:
 -   configuration
 
 Everything should be reachable from the keyboard.
-
-------------------------------------------------------------------------
-
-# 🖼️ Screenshots
-
-> Screenshots will be added here as the configuration stabilizes.
-
-### Dashboard
-
-``` text
-TODO: Add dashboard screenshot
-```
-
-### Floating Terminal
-
-``` text
-TODO: Add terminal screenshot
-```
-
-### Oil / File Management
-
-``` text
-TODO: Add Oil screenshot
-```
 
 ------------------------------------------------------------------------
 
@@ -491,13 +516,22 @@ lua/plugins/
 LazyVim's plugin-spec architecture makes it possible to modify existing
 plugins without rewriting their entire configuration.
 
+### Custom Modules
+
+The `lua/custom/` directory contains hand-built modules:
+
+-   `terminal.lua` — PowerShell floating terminal with smart CWD
+-   `cmd_terminal.lua` — CMD floating terminal with smart CWD
+-   `theme_persistence.lua` — Saves and restores the last used
+    colorscheme across sessions
+
 ### Dashboard
 
 Dashboard behavior and appearance can be modified through the relevant
 plugin configuration under:
 
 ``` text
-lua/plugins/
+lua/plugins/dashboard.lua
 ```
 
 ### Terminal configuration
@@ -506,7 +540,7 @@ Terminal behavior can be customized through the terminal-related
 configuration under:
 
 ``` text
-lua/
+lua/custom/
 ```
 
 The exact implementation may evolve as the configuration changes.
@@ -649,6 +683,10 @@ Special thanks to:
     editing.
 -   [**Telescope.nvim**](https://github.com/nvim-telescope/telescope.nvim)
     --- fuzzy finding.
+-   [**project.nvim**](https://github.com/ahmedkhalf/project.nvim) ---
+    project management.
+-   [**alpha-nvim**](https://github.com/goolord/alpha-nvim) ---
+    dashboard.
 -   [**Blink.cmp**](https://github.com/saghen/blink.cmp) --- completion.
 -   The developers and maintainers of every plugin used by this
     configuration.
