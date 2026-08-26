@@ -13,21 +13,12 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      -- vim.cmd.colorscheme("silkcircuit")
-    end,
-  },
-
-  {
-    "hyperb1iss/silkcircuit",
-    lazy = false,
-    priority = 1000,
-    config = function()
       require("silkcircuit").setup({
-        variant = "neon", -- Options: "neon", "vibrant", "soft", "glow", "dawn"[reference:6]
+        variant = "neon", -- Options: "neon", "vibrant", "soft", "glow", "dawn"
         transparent = false,
-        -- ... other options
+        integrations = {}, -- disabled: silkcircuit's auto-integrations conflict with LazyVim's Snacks-based configs
       })
-      -- vim.cmd.colorscheme("silkcircuit")
+      vim.cmd.colorscheme("silkcircuit")
     end,
   },
 
