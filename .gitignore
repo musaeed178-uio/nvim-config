@@ -23,8 +23,5 @@ lazyvim.json
 pack/
 
 # Any local testing files
-<<<<<<< HEAD
 test/
-=======
-test/
->>>>>>> master
+/.freebuff
