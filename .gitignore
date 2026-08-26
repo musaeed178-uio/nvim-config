@@ -6,21 +6,3 @@ debug
 foo.*
 *.log
 data
-
-# Lazy.nvim plugin data (downloaded plugins)
-lazy-lock.json
-lazyvim.json
-
-# Swap/backup/undo files (if you have them)
-*.swp
-*.swo
-*~
-
-# System-specific files (like netrwhist)
-.netrwhist
-
-# If you use Neovim’s built-in packages
-pack/
-
-# Any local testing files
-test/
