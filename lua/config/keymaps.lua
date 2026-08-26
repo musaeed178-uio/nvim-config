@@ -17,6 +17,11 @@ vim.keymap.set("n", "<M-c>", function()
   require("custom.cmd_terminal").toggle()
 end, { desc = "Toggle CMD split terminal" })
 
+-- Git Bash terminal toggle (Alt+b)
+vim.keymap.set("n", "<M-b>", function()
+  require("custom.gitbash_terminal").toggle()
+end, { desc = "Toggle Git Bash terminal" })
+
 -- Select all text
 vim.keymap.set("n", "<leader>a", "<cmd>normal! ggVG<CR>", {
   desc = "Select all text",

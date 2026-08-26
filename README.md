@@ -164,12 +164,13 @@ developer tooling.
 
 DopaVim provides quick floating terminal access for Windows shells.
 
-Two independent terminal sessions are available:
+Three independent terminal sessions are available:
 
 -   **Alt+i** — PowerShell (floating, 70% width)
 -   **Alt+c** — CMD (floating, 65% width)
+-   **Alt+b** — Git Bash (floating, 70% width)
 
-Both terminals automatically `cd` to the current buffer's directory.
+All terminals automatically `cd` to the current buffer's directory.
 Terminal shortcuts are intended to make running commands, checking
 builds, testing scripts, and interacting with projects require almost no
 friction.
@@ -282,7 +283,7 @@ Examples include shortcuts for:
 
 -   file navigation
 -   dashboard toggle (`<leader>h`)
--   terminal access (`Alt+i`, `Alt+c`)
+-   terminal access (`Alt+i`, `Alt+c`, `Alt+b`)
 -   buffer navigation (`<leader>1-9`)
 -   splits (`<leader>sv`, `<leader>sh`)
 -   searching
@@ -371,9 +372,10 @@ nvim/
 │   │   └── options.lua
 │   │
 │   ├── custom/
-│   │   ├── terminal.lua          -- PowerShell floating terminal
-│   │   ├── cmd_terminal.lua      -- CMD floating terminal
-│   │   └── theme_persistence.lua -- Save/restore last theme
+│   │   ├── terminal.lua            -- PowerShell floating terminal
+│   │   ├── cmd_terminal.lua        -- CMD floating terminal
+│   │   ├── gitbash_terminal.lua    -- Git Bash floating terminal
+│   │   └── theme_persistence.lua   -- Save/restore last theme
 │   │
 │   └── plugins/
 │       ├── browse-telescope.lua
@@ -411,7 +413,7 @@ Dashboard
    ├── Projects ──────────> project.nvim
    ├── Recent files ──────> Telescope
    ├── Sessions ──────────> Session manager
-   ├── Terminal ──────────> PowerShell / CMD
+   ├── Terminal ──────────> PowerShell / CMD / Git Bash
    └── Configuration ─────> Neovim config
 ```
 
@@ -435,8 +437,8 @@ Everything should be reachable from the keyboard.
 -   **Neovim 0.12.4** or newer
 -   **Git**
 -   A **Nerd Font**
--   Windows environment with PowerShell if the terminal configuration is
-    to be reproduced exactly
+-   Windows environment with PowerShell/CMD/Git Bash if the terminal
+    configuration is to be reproduced exactly
 
 A Nerd Font such as **JetBrains Mono Nerd Font** is recommended.
 
