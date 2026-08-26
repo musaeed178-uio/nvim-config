@@ -1,82 +1,97 @@
-<!--
-  DopaVim – Neovim configuration powered by LazyVim and dopamine.
-  https://github.com/musaeed178-uio/nvim-config
--->
+🧠 DopaVim
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/musaeed178-uio/nvim-config/main/assets/logo.png" width="120" alt="DopaVim logo" />
-</p>
+    A Blade Runner–inspired Neovim distribution
+    Built on LazyVim, fueled by Dopamine.
 
-<h1 align="center">DopaVim</h1>
+https://img.shields.io/badge/Neovim-0.9+-57A143?style=flat&logo=neovim&logoColor=white
+https://img.shields.io/badge/LazyVim-11.0-ff69b4?style=flat&logo=lazyvim
+https://img.shields.io/github/license/musaeed178-uio/nvim-config?style=flat
+📖 About
 
-<p align="center">
-  <strong>A Neovim configuration that feels like home.</strong><br>
-  Built on <a href="https://github.com/LazyVim/LazyVim">LazyVim</a> – customized with care, caffeine, and a touch of dopamine.
-</p>
+DopaVim is my personal Neovim configuration – a carefully crafted environment that combines the rock‑solid foundation of LazyVim with my own flavour of cyberpunk aesthetics, ergonomic keymaps, and a dash of dopamine.
 
-<p align="center">
-  <a href="https://neovim.io/">
-    <img src="https://img.shields.io/badge/Neovim-0.10+-57A143?style=flat&logo=neovim&logoColor=white" alt="Neovim version" />
-  </a>
-  <a href="https://github.com/LazyVim/LazyVim">
-    <img src="https://img.shields.io/badge/LazyVim-stable-7b9d6b?style=flat&logo=lazyvim" alt="LazyVim" />
-  </a>
-  <a href="https://github.com/musaeed178-uio/nvim-config/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/musaeed178-uio/nvim-config?color=blue" alt="License" />
-  </a>
-  <a href="https://github.com/musaeed178-uio/nvim-config/stargazers">
-    <img src="https://img.shields.io/github/stars/musaeed178-uio/nvim-config?style=flat" alt="Stars" />
-  </a>
-</p>
+It’s not just a config; it’s a daily driver that makes editing feel fluid, intuitive, and – dare I say – joyful.
+✨ Features
 
----
+    🚀 LazyVim Core – modular, fast, and extensible.
 
-## ✨ Features
+    🎨 Neofusion Theme – a dark, vibrant colourscheme with a neon vibe.
 
-- 🚀 **LazyVim core** – modern plugin management, fast startup, sane defaults.
-- 🎨 **Neofusion theme** – a vibrant, cohesive colorscheme.
-- 🖥️ **Floating terminals** – <kbd>Alt+i</kbd> for PowerShell, <kbd>Alt+c</kbd> for CMD – both with titles and independent state.
-- 📁 **Oil file explorer** – navigate and edit files like a pro (<kbd>-</kbd> to open).
-- 💾 **Session management** – save/restore sessions (`<leader>qs`, dashboard `s`/`S`).
-- 🔍 **Telescope** – fuzzy finder for files, buffers, help tags, and more.
-- 🐙 **Lazygit** – seamless Git integration via `<leader>gg`.
-- 📊 **Dashboard** – beautiful start page with live clock, plugin stats, and quick actions.
-- 📝 **Markdown preview** – render markdown in real time.
-- 🔧 **LSP ready** – with Mason for language servers, conform.nvim for formatting, nvim-lint for diagnostics.
+    🖥️ Floating Terminals – quick access to PowerShell (<M-i>) and CMD (<M-c>), both with titles, smooth borders, and Esc to normal mode.
 
----
+    📂 Oil.nvim – file explorer in a floating window (-).
 
-## 🗺️ Keymaps (Highlights)
+    🔍 Telescope – fuzzy finder for files, buffers, plugins, and sessions.
 
-| Key | Action |
-|-----|--------|
-| `<leader>gg` | Open Lazygit (floating) |
-| `<leader>h` | Toggle Dashboard |
-| `<leader>a` | Select all text |
-| `<leader>d` | Delete without yanking |
-| `<leader>sv` / `<leader>sh` | Vertical / Horizontal split |
-| `<leader>tp` / `<leader>tn` | Previous / Next buffer |
-| `<leader>1`-`<leader>9` | Go to buffer by number |
-| `-` | Open Oil (file explorer) |
-| `<M-i>` | Toggle floating PowerShell terminal |
-| `<M-c>` | Toggle floating CMD terminal |
-| `zh` / `zl` | Scroll horizontally by 6 columns |
-| `Esc` (in terminal) | Exit terminal mode to Normal mode |
+    💾 Session Management – restore last session (s) or choose from saved sessions (S) right from the dashboard.
 
-*For a full list, check `lua/config/keymaps.lua`.*
+    ⚡ Blink.cmp – super‑fast completion.
 
----
+    🧠 Lazy Extras – easily toggle features with the x button.
 
-## 🚀 Installation
+    🔧 Custom Keymaps – buffer navigation, split management, delete‑without‑yank, and more.
 
-### Prerequisites
-- [Neovim](https://neovim.io/) ≥ 0.10.0
-- [Git](https://git-scm.com/)
-- (Optional) [Lazygit](https://github.com/jesseduffield/lazygit) – for Git integration
-- (Optional) [Nerd Font](https://www.nerdfonts.com/) – for icons
+    📊 Live Dashboard – shows time, date, plugin count, and startup time.
 
-### Steps
+🖼️ Screenshots
 
-1. **Backup your existing config** (if any):
-   ```bash
-   mv ~/AppData/Local/nvim ~/AppData/Local/nvim.bak
+https://via.placeholder.com/800x400?text=Dashboard+Preview
+Replace with an actual screenshot of your Alpha dashboard.
+
+https://via.placeholder.com/800x400?text=Terminals+Preview
+PowerShell (left) and CMD (right) floating windows.
+📦 Installation
+Prerequisites
+
+    Neovim >= 0.9.0
+
+    Git
+
+    A Nerd Font (e.g., JetBrains Mono Nerd Font)
+
+Steps
+
+    Backup your existing config (if any):
+    mv ~/AppData/Local/nvim ~/AppData/Local/nvim.bak
+    mv ~/AppData/Local/nvim-data ~/AppData/Local/nvim-data.bak
+
+    Clone this repository:
+    git clone https://github.com/musaeed178-uio/nvim-config.git ~/AppData/Local/nvim
+
+    Start Neovim:
+    nvim
+
+    Lazy will automatically install all plugins. Wait for it to finish.
+
+    (Optional) Run :Lazy sync to ensure everything is up‑to‑date.
+
+🛠️ Customization
+
+    Keymaps: edit lua/config/keymaps.lua.
+
+    Options: tweak lua/config/options.lua.
+
+    Plugins: add or override in lua/plugins/.
+
+    Dashboard: modify lua/plugins/dashboard.lua to change buttons, header, or footer.
+
+    Terminals: adjust size, title, or shell in lua/custom/terminal.lua and lua/custom/cmd_terminal.lua.
+
+🙏 Credits
+
+    LazyVim – the brilliant foundation that makes all this possible.
+
+    Neofusion – the theme that gives DopaVim its soul.
+
+    All the amazing plugin authors whose work I’ve built upon.
+
+📄 License
+
+This configuration is released under the GNU Affero General Public License v3.0 – because sharing is caring, and freedom matters.
+💬 Feedback & Contributions
+
+If you find a bug or have a suggestion, feel free to open an issue or submit a pull request.
+I’m always open to learning new tricks!
+
+Made with ☕, 🧠, and a lot of Dopamine.
+— musaeed178-uio
