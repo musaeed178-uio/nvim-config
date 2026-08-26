@@ -117,23 +117,30 @@ to change.
 
 ------------------------------------------------------------------------
 
-## 🎨 Neofusion Theme
+## 🎨 Themes
 
-DopaVim uses **Neofusion** as its primary colorscheme.
+DopaVim comes with several dark, cyberpunk-inspired colorschemes
+pre-installed and ready to use:
 
-The visual direction is intentionally dark, vibrant, and slightly
-futuristic.
+-   **SilkCircuit** (default) — a vibrant cyberpunk theme with five
+    intensity variants (neon, vibrant, soft, glow, dawn)
+-   **Neofusion** — a rich, gradient-based dark theme
+-   **Neon** — a neon cyberpunk night aesthetic
+-   **Vulpes** — a warm, fox-inspired palette
 
-The aesthetic is inspired by the atmosphere of:
+Switching themes is built into LazyVim. Open the extras picker with:
 
--   Blade Runner
--   cyberpunk interfaces
--   terminal environments
--   neon-lit cityscapes
--   dark developer tooling
+``` text
+<leader> + u + C
+```
 
-The editor should feel like a workstation rather than a generic text
-editor.
+This opens the **LazyVim Colorscheme** selector, where you can browse
+and preview all available themes in real time.
+
+The visual direction across all themes is intentionally dark, vibrant,
+and slightly futuristic — inspired by Blade Runner, cyberpunk
+interfaces, terminal environments, neon-lit cityscapes, and dark
+developer tooling.
 
 ------------------------------------------------------------------------
 
@@ -289,7 +296,7 @@ DopaVim currently revolves around:
   **Neovim**         Editor
   **LazyVim**        Base distribution
   **lazy.nvim**      Plugin manager
-  **Neofusion**      Colorscheme
+  **SilkCircuit**    Colorscheme (default, 5 variants)
   **Blink.cmp**      Completion
   **Telescope**      Fuzzy finding
   **Oil.nvim**       File management
@@ -634,8 +641,10 @@ Special thanks to:
     of the configuration.
 -   [**Neovim**](https://github.com/neovim/neovim) --- the editor that
     makes this entire ecosystem possible.
+-   [**SilkCircuit**](https://github.com/hyperb1iss/silkcircuit) ---
+    the default colorscheme with multiple variants.
 -   [**Neofusion**](https://github.com/diegoulloao/neofusion.nvim) ---
-    the visual identity and colorscheme.
+    an alternative colorscheme.
 -   [**Oil.nvim**](https://github.com/stevearc/oil.nvim) --- filesystem
     editing.
 -   [**Telescope.nvim**](https://github.com/nvim-telescope/telescope.nvim)
