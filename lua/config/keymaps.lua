@@ -58,5 +58,21 @@ vim.keymap.set("v", "<leader>d", '"_d', { desc = "Delete without yank (selection
 vim.keymap.set("v", "p", '"_dP', { desc = "Paste without yank" })
 vim.keymap.set("v", "P", '"_dP', { desc = "Paste without yank (alternative)" })
 
--- Toggle Alpha Dashboard on the current buffer/window
-vim.keymap.set({ "n", "v" }, "<leader>h", "<Cmd>Alpha<CR>", { desc = "Toggle Dashboard" })
+-- Toggle Alpha Dashboard (open if not exists, close if already open)
+vim.keymap.set({ "n", "v" }, "<leader>h", function()
+  -- Check if an alpha buffer is already visible
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.bo[buf].filetype == "alpha" and vim.api.nvim_buf_is_valid(buf) then
+      local wins = vim.fn.bufwinid(buf)
+      if #wins > 0 then
+        -- Alpha is visible — close all its windows
+        for _, win in ipairs(wins) do
+          vim.api.nvim_win_close(win, true)
+        end
+        return
+      end
+    end
+  end
+  -- No alpha visible — open it
+  vim.cmd("Alpha")
+end, { desc = "Toggle Dashboard" })
