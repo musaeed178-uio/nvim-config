@@ -1,7 +1,7 @@
 # 🧠 DopaVim
 
-> **A Blade Runner--inspired Neovim distribution for people who actually
-> want to enjoy using their editor.**\
+> **A Neovim distribution for people who actually
+> love coding and are IN for the love of the game.**\
 > *Built on LazyVim. Personalized from the ground up. Fueled by
 > Dopamine.*
 
@@ -29,21 +29,22 @@ rebuilding, and customization.
 
 The goal was never to create another "minimal Neovim config."
 
-The goal was to build an editor that feels **mine**.
+The goal was to build an editor that feels **mine** and saves the frustration frustration
+of customizing other's distros according to your own preferences and workflow.
 
 DopaVim combines:
 
--   a solid LazyVim foundation
--   a dark cyberpunk / Blade Runner-inspired aesthetic
--   fast navigation and fuzzy finding
--   floating terminals
+-   a solid LazyVim foundation (that means LSP and treesitter right out of the box)
+-   multiple dark aesthetic themes
+-   fast navigation (Telescope + Oil) and fuzzy finding
+-   floating terminals (CMD, PWSH, GitBash, you name it, you get it)
 -   a practical file-management workflow
 -   custom dashboard and session workflows
 -   project management with project.nvim
 -   theme persistence across sessions
 -   carefully chosen plugins
 -   personalized keymaps
--   a setup optimized around my actual day-to-day development
+-   a setup optimized for an actual day-to-day development
 
 I use Neovim as more than a text editor. It is the place where I work on
 university projects, programming experiments, AI/ML learning,
@@ -51,9 +52,10 @@ system-level experiments, and larger personal projects.
 
 So DopaVim is intentionally opinionated.
 
-It is not designed to satisfy everyone.
+It is not designed to satisfy everyone. (It will, in-case it grows.)
+(Or you can contact me if it doesn't)
 
-**It is designed to make me want to open Neovim.**
+**It is designed to make me (and Ideally, you) want to open Neovim.**
 
 ------------------------------------------------------------------------
 
@@ -166,9 +168,9 @@ DopaVim provides quick floating terminal access for Windows shells.
 
 Three independent terminal sessions are available:
 
--   **Alt+i** — PowerShell (floating, 70% width)
--   **Alt+c** — CMD (floating, 65% width)
--   **Alt+b** — Git Bash (floating, 70% width)
+-   **Alt+i** — PowerShell
+-   **Alt+c** — CMD
+-   **Alt+b** — Git Bash
 
 All terminals automatically `cd` to the current buffer's directory.
 Terminal shortcuts are intended to make running commands, checking
@@ -445,17 +447,19 @@ A Nerd Font such as **JetBrains Mono Nerd Font** is recommended.
 ------------------------------------------------------------------------
 
 ## Windows Installation
+(currently only built and tried on windows, so idk if it works on linux)
 
-### 1. Back up an existing configuration
+### 1. Back up your existing configuration (if any)
 
-If Neovim is already configured:
+If your Neovim is already configured, run the following
+commands to back it up:
 
 ``` powershell
 Rename-Item "$env:LOCALAPPDATA\nvim" "$env:LOCALAPPDATA\nvim.bak"
 Rename-Item "$env:LOCALAPPDATA\nvim-data" "$env:LOCALAPPDATA\nvim-data.bak"
 ```
 
-> Back up anything you want to keep before running these commands.
+> Back up anything you want to keep before running the below commands.
 
 ### 2. Clone DopaVim
 
@@ -657,13 +661,15 @@ Computer Science student and developer interested in:
 -   developer tooling
 -   automation
 -   open-source software
+-   literally anything, just name it
 
 Projects and experiments range from university software systems to AI/ML
 learning projects, POS/inventory systems, routing simulations, and
-system-level experimentation.
+system-level experimentation. (Just AI thoughts btw)
 
 DopaVim is one of those projects where the tooling itself becomes part
-of the learning process.
+of the learning process. (and where just the tool to write code starts
+giving you nightmares.)
 
 ------------------------------------------------------------------------
 
@@ -722,9 +728,9 @@ workflow:
 
 -   open an issue
 -   submit a pull request
--   or simply share the idea
+-   or simply contact me to share the idea
 
-The configuration is constantly evolving.
+The configuration is/will be constantly evolving.
 
 ------------------------------------------------------------------------
 
