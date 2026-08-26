@@ -73,7 +73,10 @@ return {
 
         dashboard.button("o", "󰉋  Projects", "<cmd>Oil<CR>"),
 
-        dashboard.button("c", "  Configuration", "<cmd>Oil C:/Users/musae/AppData/Local/nvim<CR>"),
+        dashboard.button("c", "  Configuration", function()
+          local config_dir = vim.fn.stdpath("config")
+          vim.cmd("Oil " .. config_dir)
+        end),
 
         dashboard.button("l", "󰏓  Lazy", "<cmd>Lazy<CR>"),
 
