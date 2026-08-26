@@ -1,10 +1,29 @@
+local theme_applied = false
+local default_theme = "silkcircuit"
+local persistence = require("custom.theme_persistence")
+
+--- Apply a colorscheme if one hasn't been applied yet this session.
+--- On first call: loads saved theme or falls back to default.
+--- On subsequent calls: no-op.
+local function apply_theme(fallback)
+  if theme_applied then
+    return
+  end
+  theme_applied = true
+  persistence.setup_autosave()
+  local saved = persistence.load()
+  if saved and pcall(vim.cmd.colorscheme, saved) then
+    return
+  end
+  vim.cmd.colorscheme(fallback or default_theme)
+end
+
 return {
   {
     "diegoulloao/neofusion.nvim",
     priority = 1000,
     config = function()
       require("neofusion").setup({ transparent_mode = false })
-      -- vim.cmd.colorscheme("neofusion")
     end,
   },
 
@@ -44,7 +63,7 @@ return {
         end
         return real_notify(msg, level, opts)
       end
-      vim.cmd.colorscheme("silkcircuit")
+      apply_theme("silkcircuit")
       vim.notify = real_notify
     end,
   },
@@ -61,7 +80,7 @@ return {
       },
     },
     config = function()
-      -- vim.cmd.colorscheme("neon-cyberpunk-night") -- Choose your variant
+      apply_theme("neon-cyberpunk-night")
     end,
   },
 
@@ -70,9 +89,7 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      -- The exact colorscheme name may vary, check the plugin's README.
-      -- It might be "vulpes" or "vulpes-reddishnovember".
-      -- vim.cmd.colorscheme("vulpes")
+      apply_theme("vulpes")
     end,
   },
 }
