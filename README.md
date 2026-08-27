@@ -21,7 +21,7 @@
 
 ------------------------------------------------------------------------
 
-![Preview](images/screenshot.png)
+![Preview](images/screenshot.jpeg)
 
 ## 📖 What is DopaVim?
 
