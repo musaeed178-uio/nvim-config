@@ -7,7 +7,7 @@
 
 [![Neovim](https://img.shields.io/badge/Neovim-0.12.4-57A143?style=flat&logo=neovim&logoColor=white)](https://neovim.io/)
 [![LazyVim](https://img.shields.io/badge/LazyVim-11.0-ff69b4?style=flat&logo=lazyvim)](https://www.lazyvim.org/)
-[![License](https://img.shields.io/github/license/musaeed178-uio/nvim-config?style=flat)](https://github.com/musaeed178-uio/nvim-config/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/musaeed178-uio/nvim-config?style=flat)](GNU AFFERO GENERAL PUBLIC LICENSE)
 
 ```
   ██████╗  ██████╗ ██████╗  █████╗ ██╗   ██╗██╗███╗   ███╗
