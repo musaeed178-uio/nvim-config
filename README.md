@@ -21,6 +21,8 @@
 
 ------------------------------------------------------------------------
 
+![Preview](images/screenshot.png)
+
 ## 📖 What is DopaVim?
 
 **DopaVim** is my personal Neovim environment, built on top of
