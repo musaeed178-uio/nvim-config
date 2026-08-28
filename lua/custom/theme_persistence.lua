@@ -21,6 +21,9 @@ function M.load()
   if f then
     local name = f:read("*l")
     f:close()
+    if name then
+      name = name:gsub("%s+", "")
+    end
     return name
   end
   return nil

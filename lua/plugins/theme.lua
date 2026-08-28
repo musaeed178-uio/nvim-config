@@ -2,9 +2,9 @@ local theme_applied = false
 local default_theme = "silkcircuit"
 local persistence = require("custom.theme_persistence")
 
---- Apply a colorscheme if one hasn't been applied yet this session.
---- On first call: loads saved theme or falls back to default.
---- On subsequent calls: no-op.
+--- Apply a colorscheme. Loads saved theme or falls back to default.
+--- Called from VimEnter so it runs AFTER all plugins are loaded,
+--- preventing any plugin from overriding the chosen theme.
 local function apply_theme(fallback)
   if theme_applied then
     return
@@ -12,16 +12,27 @@ local function apply_theme(fallback)
   theme_applied = true
   persistence.setup_autosave()
   local saved = persistence.load()
-  if saved and pcall(vim.cmd.colorscheme, saved) then
-    return
+  if saved and saved ~= "" then
+    local ok = pcall(vim.cmd.colorscheme, saved)
+    if ok then
+      return
+    end
   end
   vim.cmd.colorscheme(fallback or default_theme)
 end
 
+-- Apply theme AFTER all plugins have loaded (VimEnter fires last)
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function()
+    apply_theme(default_theme)
+  end,
+})
+
 return {
   {
     "diegoulloao/neofusion.nvim",
-    priority = 1000,
+    -- priority = 1000,
     config = function()
       require("neofusion").setup({ transparent_mode = false })
     end,
@@ -30,7 +41,7 @@ return {
   {
     "hyperb1iss/silkcircuit",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
     config = function()
       require("silkcircuit").setup({
         variant = "neon", -- Options: "neon", "vibrant", "soft", "glow", "dawn"
@@ -83,23 +94,13 @@ return {
           avante = false,
         },
       })
-      -- Suppress silkcircuit's "loaded in Xms" notification
-      local real_notify = vim.notify
-      vim.notify = function(msg, level, opts)
-        if type(msg) == "string" and msg:find("SilkCircuit") then
-          return
-        end
-        return real_notify(msg, level, opts)
-      end
-      apply_theme("silkcircuit")
-      vim.notify = real_notify
     end,
   },
 
   {
     "Zeioth/neon.nvim",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
     opts = {
       dim_inactive = false,
       styles = {
@@ -107,18 +108,14 @@ return {
         keywords = { italic = true },
       },
     },
-    config = function()
-      apply_theme("neon-cyberpunk-night")
-    end,
+
   },
 
   {
     "ejfox/vulpes.nvim",
     lazy = false,
-    priority = 1000,
-    config = function()
-      apply_theme("vulpes")
-    end,
+    -- priority = 1000,
+
   },
 
   {
@@ -147,17 +144,33 @@ return {
 
   {
     "ray-x/aurora",
-    -- init = function()
-    --   vim.g.aurora_italic = 1
-    --   vim.g.aurora_transparent = 1
-    --   vim.g.aurora_bold = 1
-    -- end,
-    -- config = function()
-    --   vim.cmd.colorscheme("aurora")
-    --   -- override defaults
-    --   vim.api.nvim_set_hl(0, "@number", { fg = "#e933e3" })
-    -- end,
+    config = function()
+      -- Set options directly before loading the theme
+      vim.g.aurora_italic = 1
+      vim.g.aurora_transparent = 0
+      vim.g.aurora_bold = 1
+
+      -- Load the colorscheme
+      -- vim.cmd.colorscheme("aurora")
+
+      -- Override defaults
+      vim.api.nvim_set_hl(0, "@number", { fg = "#e933e3" })
+    end,
   },
+
+  -- {
+  --   "ray-x/aurora",
+  --   init = function()
+  --     vim.g.aurora_italic = 1
+  --     vim.g.aurora_transparent = 1
+  --     vim.g.aurora_bold = 1
+  --   end,
+  --   config = function()
+  --     vim.cmd.colorscheme("aurora")
+  --     -- override defaults
+  --     vim.api.nvim_set_hl(0, "@number", { fg = "#e933e3" })
+  --   end,
+  -- },
 
   {
     "YedTheEmo/gore.nvim",
@@ -166,7 +179,7 @@ return {
   {
     "mitander/flume.nvim",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
     config = function()
       vim.opt.termguicolors = true
       require("flume").setup({ schema = "dusk" })
@@ -176,38 +189,30 @@ return {
   {
     "takeshid/plum.nvim",
     lazy = false,
-    priority = 1000,
-    config = function()
-      require("plum").setup({
-        variant = "dark",
-      })
-      vim.cmd("colorscheme plum")
-    end,
+    -- priority = 1000,
+    opts = {
+      variant = "dark",
+    },
   },
 
   {
     "thallada/farout.nvim",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
     opts = {},
   },
 
   {
     "ribru17/bamboo.nvim",
     lazy = false,
-    priority = 1000,
-    config = function()
-      require("bamboo").setup({
-        -- optional configuration here
-      })
-      require("bamboo").load()
-    end,
+    -- priority = 1000,
+    opts = {},
   },
 
   {
     "eldritch-theme/eldritch.nvim",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
     opts = {},
   },
 
@@ -218,27 +223,25 @@ return {
   {
     "oxfist/night-owl.nvim",
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
+    -- priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       -- load the colorscheme here
       require("night-owl").setup()
-      vim.cmd.colorscheme("night-owl")
+      -- vim.cmd.colorscheme("night-owl")
     end,
   },
 
   {
     "xero/miasma.nvim",
     lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd("colorscheme miasma")
-    end,
+    -- priority = 1000,
+    config = function() end,
   },
 
   {
     "uloco/bluloco.nvim",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
     dependencies = { "rktjmp/lush.nvim" },
     opts = {},
   },
@@ -246,7 +249,7 @@ return {
   {
     "dgox16/oldworld.nvim",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
   },
 
   {
@@ -280,14 +283,14 @@ return {
   {
     "embark-theme/vim",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
     name = "embark",
   },
 
   {
     "olivercederborg/poimandres.nvim",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
     config = function()
       require("poimandres").setup({
         -- leave this setup function empty for default config
@@ -295,18 +298,13 @@ return {
         -- for configuration options
       })
     end,
-
-    -- optionally set the colorscheme within lazy config
-    init = function()
-      vim.cmd("colorscheme poimandres")
-    end,
   },
 
   {
     "bluz71/vim-moonfly-colors",
     name = "moonfly",
     lazy = false,
-    priority = 1000,
+    -- priority = 1000,
   },
 
   {
@@ -315,12 +313,9 @@ return {
 
   {
     "navarasu/onedark.nvim",
-    priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      require("onedark").setup({
-        style = "darker",
-      })
-      require("onedark").load()
-    end,
+    -- priority = 1000, -- make sure to load this before all the other start plugins
+    opts = {
+      style = "darker",
+    },
   },
 }
