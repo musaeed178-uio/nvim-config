@@ -68,12 +68,16 @@ vim.keymap.set({ "n", "v" }, "<leader>h", function()
   local cur_win = vim.api.nvim_get_current_win()
   local cur_buf = vim.api.nvim_get_current_buf()
 
-  -- If current window already shows alpha → close it (go back to previous buffer)
+  -- If current window already shows alpha → restore the saved buffer for this window
   if vim.bo[cur_buf].filetype == "alpha" then
-    vim.cmd("bprevious")
+    local prev = vim.w._dashboard_prev_buf
+    if prev and vim.api.nvim_buf_is_valid(prev) then
+      vim.api.nvim_win_set_buf(cur_win, prev)
+    end
     return
   end
 
-  -- Otherwise → open alpha in the current window
+  -- Save the current buffer for this window, then open alpha
+  vim.w._dashboard_prev_buf = cur_buf
   vim.cmd("Alpha")
 end, { desc = "Toggle Dashboard" })
