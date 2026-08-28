@@ -120,4 +120,207 @@ return {
       apply_theme("vulpes")
     end,
   },
+
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    -- config = function()
+    --   vim.cmd("colorscheme rose-pine")
+    -- end,
+  },
+
+  {
+    "EdenEast/nightfox.nvim",
+  },
+
+  {
+    "nanotech/jellybeans.vim",
+  },
+
+  {
+    "sjl/badwolf",
+  },
+
+  {
+    "tiagovla/tokyodark.nvim",
+  },
+
+  {
+    "ray-x/aurora",
+    -- init = function()
+    --   vim.g.aurora_italic = 1
+    --   vim.g.aurora_transparent = 1
+    --   vim.g.aurora_bold = 1
+    -- end,
+    -- config = function()
+    --   vim.cmd.colorscheme("aurora")
+    --   -- override defaults
+    --   vim.api.nvim_set_hl(0, "@number", { fg = "#e933e3" })
+    -- end,
+  },
+
+  {
+    "YedTheEmo/gore.nvim",
+  },
+
+  {
+    "mitander/flume.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.opt.termguicolors = true
+      require("flume").setup({ schema = "dusk" })
+    end,
+  },
+
+  {
+    "takeshid/plum.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("plum").setup({
+        variant = "dark",
+      })
+      vim.cmd("colorscheme plum")
+    end,
+  },
+
+  {
+    "thallada/farout.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+
+  {
+    "ribru17/bamboo.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("bamboo").setup({
+        -- optional configuration here
+      })
+      require("bamboo").load()
+    end,
+  },
+
+  {
+    "eldritch-theme/eldritch.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+
+  {
+    "maxmx03/fluoromachine.nvim",
+  },
+
+  {
+    "oxfist/night-owl.nvim",
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      -- load the colorscheme here
+      require("night-owl").setup()
+      vim.cmd.colorscheme("night-owl")
+    end,
+  },
+
+  {
+    "xero/miasma.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd("colorscheme miasma")
+    end,
+  },
+
+  {
+    "uloco/bluloco.nvim",
+    lazy = false,
+    priority = 1000,
+    dependencies = { "rktjmp/lush.nvim" },
+    opts = {},
+  },
+
+  {
+    "dgox16/oldworld.nvim",
+    lazy = false,
+    priority = 1000,
+  },
+
+  {
+    "luisiacc/gruvbox-baby",
+  },
+
+  {
+    "shaunsingh/moonlight.nvim",
+  },
+
+  {
+    "samharju/synthweave.nvim",
+  },
+
+  {
+    "datsfilipe/vesper.nvim",
+  },
+
+  {
+    "blazkowolf/gruber-darker.nvim",
+  },
+
+  {
+    "rockerBOO/boo-colorscheme-nvim",
+  },
+
+  {
+    "Tsuzat/NeoSolarized.nvim",
+  },
+
+  {
+    "embark-theme/vim",
+    lazy = false,
+    priority = 1000,
+    name = "embark",
+  },
+
+  {
+    "olivercederborg/poimandres.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("poimandres").setup({
+        -- leave this setup function empty for default config
+        -- or refer to the configuration section
+        -- for configuration options
+      })
+    end,
+
+    -- optionally set the colorscheme within lazy config
+    init = function()
+      vim.cmd("colorscheme poimandres")
+    end,
+  },
+
+  {
+    "bluz71/vim-moonfly-colors",
+    name = "moonfly",
+    lazy = false,
+    priority = 1000,
+  },
+
+  {
+    "morhetz/gruvbox",
+  },
+
+  {
+    "navarasu/onedark.nvim",
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require("onedark").setup({
+        style = "darker",
+      })
+      require("onedark").load()
+    end,
+  },
 }
