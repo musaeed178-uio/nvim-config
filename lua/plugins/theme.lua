@@ -108,14 +108,12 @@ return {
         keywords = { italic = true },
       },
     },
-
   },
 
   {
     "ejfox/vulpes.nvim",
     lazy = false,
     -- priority = 1000,
-
   },
 
   {

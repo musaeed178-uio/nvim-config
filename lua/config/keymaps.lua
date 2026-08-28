@@ -63,24 +63,21 @@ vim.keymap.set("v", "<leader>d", '"_d', { desc = "Delete without yank (selection
 vim.keymap.set("v", "p", '"_dP', { desc = "Paste without yank" })
 vim.keymap.set("v", "P", '"_dP', { desc = "Paste without yank (alternative)" })
 
--- Toggle Alpha Dashboard (open if not exists, close if already open)
+-- Toggle Alpha Dashboard (per-window: toggles in the current split)
 vim.keymap.set({ "n", "v" }, "<leader>h", function()
-  -- Check if an alpha buffer is already visible
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.bo[buf].filetype == "alpha" and vim.api.nvim_buf_is_valid(buf) then
-      local wins = vim.fn.win_findbuf(buf)
-      if #wins > 0 then
-        -- Alpha is visible — switch away first, then close its windows
-        vim.cmd("bprevious")
-        for _, win in ipairs(wins) do
-          if vim.api.nvim_win_is_valid(win) then
-            pcall(vim.api.nvim_win_close, win, true)
-          end
-        end
-        return
-      end
+  local cur_win = vim.api.nvim_get_current_win()
+  local cur_buf = vim.api.nvim_get_current_buf()
+
+  -- If current window already shows alpha → restore the saved buffer for this window
+  if vim.bo[cur_buf].filetype == "alpha" then
+    local prev = vim.w._dashboard_prev_buf
+    if prev and vim.api.nvim_buf_is_valid(prev) then
+      vim.api.nvim_win_set_buf(cur_win, prev)
     end
+    return
   end
-  -- No alpha visible — open it
+
+  -- Save the current buffer for this window, then open alpha
+  vim.w._dashboard_prev_buf = cur_buf
   vim.cmd("Alpha")
 end, { desc = "Toggle Dashboard" })
