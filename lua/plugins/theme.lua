@@ -44,8 +44,24 @@ return {
     -- priority = 1000,
     config = function()
       require("silkcircuit").setup({
-        variant = "neon", -- Options: "neon", "vibrant", "soft", "glow", "dawn"
+        variant = "glow", -- Options: "neon", "vibrant", "soft", "glow", "dawn"
         transparent = false,
+        on_highlights = function(hl)
+          -- Visual selection: visible purple (overrides glow variant invisible #ff00ff44)
+          hl.Visual     = { bg = "#7c3aed" }
+          hl.VisualNOS  = { bg = "#5b3a8e" }
+          -- LSP/Illuminate word highlights
+          hl.LspReferenceText    = { bg = "#4a2066", underline = true }
+          hl.LspReferenceRead    = { bg = "#3a1850", underline = true }
+          hl.LspReferenceWrite   = { bg = "#5a2a77", bold = true }
+          hl.IlluminatedWordText  = { bg = "#4a2066", underline = true }
+          hl.IlluminatedWordRead  = { bg = "#3a1850", underline = true }
+          hl.IlluminatedWordWrite = { bg = "#5a2a77", bold = true }
+          -- Search highlights
+          hl.CurSearch  = { fg = "#0a0816", bg = "#00ffff", bold = true }
+          hl.Search     = { fg = "#0a0816", bg = "#ffff00" }
+          hl.IncSearch  = { fg = "#0a0816", bg = "#ff8800" }
+        end,
         integrations = {
           -- All integrations disabled to prevent conflicts with LazyVim's Snacks-based plugin configs.
           -- silkcircuit still applies its colorscheme and highlights; it just won't modify other plugin specs.
@@ -63,7 +79,7 @@ return {
           bufferline = false,
           lualine = false,
           dashboard = false,
-          alpha = false,
+          alpha = true,
           which_key = false,
           cmp = false,
           blink_cmp = false,
