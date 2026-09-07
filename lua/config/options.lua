@@ -9,3 +9,4 @@
 -- Always wrap lines and break at word boundaries
 vim.opt.wrap = true
 vim.opt.linebreak = true
+vim.opt.spellcapcheck = ""
