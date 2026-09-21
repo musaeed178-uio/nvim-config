@@ -48,19 +48,19 @@ return {
         transparent = false,
         on_highlights = function(hl)
           -- Visual selection: visible purple (overrides glow variant invisible #ff00ff44)
-          hl.Visual     = { bg = "#7c3aed" }
-          hl.VisualNOS  = { bg = "#5b3a8e" }
+          hl.Visual = { bg = "#7c3aed" }
+          hl.VisualNOS = { bg = "#5b3a8e" }
           -- LSP/Illuminate word highlights
-          hl.LspReferenceText    = { bg = "#4a2066", underline = true }
-          hl.LspReferenceRead    = { bg = "#3a1850", underline = true }
-          hl.LspReferenceWrite   = { bg = "#5a2a77", bold = true }
-          hl.IlluminatedWordText  = { bg = "#4a2066", underline = true }
-          hl.IlluminatedWordRead  = { bg = "#3a1850", underline = true }
+          hl.LspReferenceText = { bg = "#4a2066", underline = true }
+          hl.LspReferenceRead = { bg = "#3a1850", underline = true }
+          hl.LspReferenceWrite = { bg = "#5a2a77", bold = true }
+          hl.IlluminatedWordText = { bg = "#4a2066", underline = true }
+          hl.IlluminatedWordRead = { bg = "#3a1850", underline = true }
           hl.IlluminatedWordWrite = { bg = "#5a2a77", bold = true }
           -- Search highlights
-          hl.CurSearch  = { fg = "#0a0816", bg = "#00ffff", bold = true }
-          hl.Search     = { fg = "#0a0816", bg = "#ffff00" }
-          hl.IncSearch  = { fg = "#0a0816", bg = "#ff8800" }
+          hl.CurSearch = { fg = "#0a0816", bg = "#00ffff", bold = true }
+          hl.Search = { fg = "#0a0816", bg = "#ffff00" }
+          hl.IncSearch = { fg = "#0a0816", bg = "#ff8800" }
         end,
         integrations = {
           -- All integrations disabled to prevent conflicts with LazyVim's Snacks-based plugin configs.
@@ -113,18 +113,18 @@ return {
     end,
   },
 
-  {
-    "Zeioth/neon.nvim",
-    lazy = false,
-    -- priority = 1000,
-    opts = {
-      dim_inactive = false,
-      styles = {
-        comments = { italic = true },
-        keywords = { italic = true },
-      },
-    },
-  },
+  -- {
+  --   "Zeioth/neon.nvim",
+  --   lazy = false,
+  --   -- priority = 1000,
+  --   opts = {
+  --     dim_inactive = false,
+  --     styles = {
+  --       comments = { italic = true },
+  --       keywords = { italic = true },
+  --     },
+  --   },
+  -- },
 
   {
     "ejfox/vulpes.nvim",
@@ -140,37 +140,37 @@ return {
     -- end,
   },
 
-  {
-    "EdenEast/nightfox.nvim",
-  },
-
-  {
-    "nanotech/jellybeans.vim",
-  },
-
-  {
-    "sjl/badwolf",
-  },
+  -- {
+  --   "EdenEast/nightfox.nvim",
+  -- },
+  --
+  -- {
+  --   "nanotech/jellybeans.vim",
+  -- },
+  --
+  -- {
+  --   "sjl/badwolf",
+  -- },
 
   {
     "tiagovla/tokyodark.nvim",
   },
 
-  {
-    "ray-x/aurora",
-    config = function()
-      -- Set options directly before loading the theme
-      vim.g.aurora_italic = 1
-      vim.g.aurora_transparent = 0
-      vim.g.aurora_bold = 1
-
-      -- Load the colorscheme
-      -- vim.cmd.colorscheme("aurora")
-
-      -- Override defaults
-      vim.api.nvim_set_hl(0, "@number", { fg = "#e933e3" })
-    end,
-  },
+  -- {
+  --   "ray-x/aurora",
+  --   config = function()
+  --     -- Set options directly before loading the theme
+  --     vim.g.aurora_italic = 1
+  --     vim.g.aurora_transparent = 0
+  --     vim.g.aurora_bold = 1
+  --
+  --     -- Load the colorscheme
+  --     -- vim.cmd.colorscheme("aurora")
+  --
+  --     -- Override defaults
+  --     vim.api.nvim_set_hl(0, "@number", { fg = "#e933e3" })
+  --   end,
+  -- },
 
   -- {
   --   "ray-x/aurora",
@@ -190,15 +190,15 @@ return {
     "YedTheEmo/gore.nvim",
   },
 
-  {
-    "mitander/flume.nvim",
-    lazy = false,
-    -- priority = 1000,
-    config = function()
-      vim.opt.termguicolors = true
-      require("flume").setup({ schema = "dusk" })
-    end,
-  },
+  -- {
+  --   "mitander/flume.nvim",
+  --   lazy = false,
+  --   -- priority = 1000,
+  --   config = function()
+  --     vim.opt.termguicolors = true
+  --     require("flume").setup({ schema = "dusk" })
+  --   end,
+  -- },
 
   {
     "takeshid/plum.nvim",
@@ -216,12 +216,12 @@ return {
     opts = {},
   },
 
-  {
-    "ribru17/bamboo.nvim",
-    lazy = false,
-    -- priority = 1000,
-    opts = {},
-  },
+  -- {
+  --   "ribru17/bamboo.nvim",
+  --   lazy = false,
+  --   -- priority = 1000,
+  --   opts = {},
+  -- },
 
   {
     "eldritch-theme/eldritch.nvim",
@@ -230,9 +230,9 @@ return {
     opts = {},
   },
 
-  {
-    "maxmx03/fluoromachine.nvim",
-  },
+  -- {
+  --   "maxmx03/fluoromachine.nvim",
+  -- },
 
   {
     "oxfist/night-owl.nvim",
@@ -245,61 +245,61 @@ return {
     end,
   },
 
-  {
-    "xero/miasma.nvim",
-    lazy = false,
-    -- priority = 1000,
-    config = function() end,
-  },
+  -- {
+  --   "xero/miasma.nvim",
+  --   lazy = false,
+  --   -- priority = 1000,
+  --   config = function() end,
+  -- },
 
-  {
-    "uloco/bluloco.nvim",
-    lazy = false,
-    -- priority = 1000,
-    dependencies = { "rktjmp/lush.nvim" },
-    opts = {},
-  },
+  -- {
+  --   "uloco/bluloco.nvim",
+  --   lazy = false,
+  --   -- priority = 1000,
+  --   dependencies = { "rktjmp/lush.nvim" },
+  --   opts = {},
+  -- },
+  --
+  -- {
+  --   "dgox16/oldworld.nvim",
+  --   lazy = false,
+  --   -- priority = 1000,
+  -- },
 
-  {
-    "dgox16/oldworld.nvim",
-    lazy = false,
-    -- priority = 1000,
-  },
+  -- {
+  --   "luisiacc/gruvbox-baby",
+  -- },
+  --
+  -- {
+  --   "shaunsingh/moonlight.nvim",
+  -- },
+  --
+  -- {
+  --   "samharju/synthweave.nvim",
+  -- },
 
-  {
-    "luisiacc/gruvbox-baby",
-  },
-
-  {
-    "shaunsingh/moonlight.nvim",
-  },
-
-  {
-    "samharju/synthweave.nvim",
-  },
-
-  {
-    "datsfilipe/vesper.nvim",
-  },
-
-  {
-    "blazkowolf/gruber-darker.nvim",
-  },
+  -- {
+  --   "datsfilipe/vesper.nvim",
+  -- },
+  --
+  -- {
+  --   "blazkowolf/gruber-darker.nvim",
+  -- },
 
   {
     "rockerBOO/boo-colorscheme-nvim",
   },
 
-  {
-    "Tsuzat/NeoSolarized.nvim",
-  },
+  -- {
+  --   "Tsuzat/NeoSolarized.nvim",
+  -- },
 
-  {
-    "embark-theme/vim",
-    lazy = false,
-    -- priority = 1000,
-    name = "embark",
-  },
+  -- {
+  --   "embark-theme/vim",
+  --   lazy = false,
+  --   -- priority = 1000,
+  --   name = "embark",
+  -- },
 
   {
     "olivercederborg/poimandres.nvim",

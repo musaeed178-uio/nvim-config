@@ -44,7 +44,9 @@ DopaVim combines:
 -   custom dashboard and session workflows
 -   project management with project.nvim
 -   theme persistence across sessions
--   carefully chosen plugins (except for themes, they come without any reason cause of course, it's DopaVim)
+-   carefully chosen plugins (except for themes, they come without any reason
+    cause of course, it's DopaVim. To enable/add more themes, just uncomment already
+    existing themes inside plugins/theme.lua or add a new theme there yourself.)
 -   personalized keymaps
 -   a setup optimized for an actual day-to-day development
 
