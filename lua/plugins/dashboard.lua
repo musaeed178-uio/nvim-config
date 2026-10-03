@@ -112,7 +112,11 @@ return {
         dashboard.button("o", "󰉋  Browse Files - Oil", "<cmd>Oil<CR>"),
 
         dashboard.button("p", "󱇀  Projects", function()
-          LazyVim.pick("projects")()
+          -- Deliberately not LazyVim.pick("projects"): the Telescope picker
+          -- resolves through telescope.builtin, which does not expose
+          -- extension pickers. LazyVim's own util.project extra uses
+          -- `:Telescope projects` for exactly this reason.
+          vim.cmd("Telescope projects")
         end),
 
         dashboard.button("r", "󱋡  Recent Files", function()
@@ -121,7 +125,7 @@ return {
 
         dashboard.button("c", "  Configuration", function()
           local config_dir = vim.fn.stdpath("config")
-          vim.cmd("Oil " .. config_dir)
+          vim.cmd("Oil " .. vim.fn.fnameescape(config_dir))
         end),
 
         dashboard.button("l", "󰏓  Lazy", "<cmd>Lazy<CR>"),

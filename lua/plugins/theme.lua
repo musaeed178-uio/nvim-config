@@ -12,13 +12,13 @@ local function apply_theme(fallback)
   theme_applied = true
   persistence.setup_autosave()
   local saved = persistence.load()
-  if saved and saved ~= "" then
-    local ok = pcall(vim.cmd.colorscheme, saved)
-    if ok then
-      return
-    end
+  if saved and saved ~= "" and pcall(vim.cmd.colorscheme, saved) then
+    return
   end
-  vim.cmd.colorscheme(fallback or default_theme)
+  -- Never let a missing/broken default theme raise E185 at VimEnter.
+  if not pcall(vim.cmd.colorscheme, fallback or default_theme) then
+    pcall(vim.cmd.colorscheme, "habamax")
+  end
 end
 
 -- Apply theme AFTER all plugins have loaded (VimEnter fires last)
@@ -30,6 +30,14 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 return {
+  -- Paint the default theme during LazyVim's own startup pass instead of
+  -- letting it fall back to LazyVim's built-in tokyonight. VimEnter then
+  -- swaps in the persisted theme (see apply_theme above) if it differs.
+  {
+    "LazyVim/LazyVim",
+    opts = { colorscheme = default_theme },
+  },
+
   {
     "diegoulloao/neofusion.nvim",
     -- priority = 1000,
@@ -237,12 +245,14 @@ return {
   {
     "oxfist/night-owl.nvim",
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    -- priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      -- load the colorscheme here
-      require("night-owl").setup()
-      -- vim.cmd.colorscheme("night-owl")
-    end,
+    -- priority = 1000, -- make sure we load this before all the other start plugins
+    -- Do NOT call setup() here: night-owl's setup() runs `highlight clear` and
+    -- then sets vim.g.colors_name = "night-owl" *without* applying a single
+    -- highlight, so calling it at startup wiped the theme LazyVim had just
+    -- painted and left vim.g.colors_name lying about it (which the
+    -- night-owl Visual fix in config/autocmds.lua keys on).
+    -- `:colorscheme night-owl` already loads colors/night-owl.lua, which
+    -- applies the palette and lets Neovim set colors_name itself.
   },
 
   -- {

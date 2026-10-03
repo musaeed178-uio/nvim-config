@@ -29,9 +29,11 @@ function M.load()
   return nil
 end
 
---- Set up autocmd to auto-save theme on change
+--- Set up autocmd to auto-save theme on change (idempotent)
 function M.setup_autosave()
+  local group = vim.api.nvim_create_augroup("dopavim_theme_persistence", { clear = true })
   vim.api.nvim_create_autocmd("ColorScheme", {
+    group = group,
     pattern = "*",
     callback = function(args)
       M.save(args.match)
