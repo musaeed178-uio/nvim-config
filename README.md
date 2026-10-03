@@ -6,7 +6,8 @@
 > Dopamine.*
 
 [![Neovim](https://img.shields.io/badge/Neovim-0.12.4-57A143?style=flat&logo=neovim&logoColor=white)](https://neovim.io/)
-[![LazyVim](https://img.shields.io/badge/LazyVim-11.0-ff69b4?style=flat&logo=lazyvim)](https://www.lazyvim.org/)
+[![LazyVim](https://img.shields.io/badge/LazyVim-16.x-ff69b4?style=flat&logo=lazyvim&logoColor=white)](https://www.lazyvim.org/)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%C2%B7%20Linux-blue?style=flat)](https://github.com/musaeed178-uio/nvim-config)
 [![License](https://img.shields.io/github/license/musaeed178-uio/nvim-config?style=flat)](https://github.com/musaeed178-uio/nvim-config/blob/main/LICENSE)
 
 ```
@@ -39,7 +40,8 @@ DopaVim combines:
 -   a solid LazyVim foundation (that means LSP and treesitter right out of the box)
 -   multiple dark aesthetic themes
 -   fast navigation (Telescope + Oil) and fuzzy finding
--   floating terminals (CMD, PWSH, GitBash, you name it, you get it)
+-   floating terminals on `Alt+i` / `Alt+c` / `Alt+b` (PowerShell, default
+    shell, Git Bash - each one resolved for the OS you are on)
 -   a practical file-management workflow
 -   custom dashboard and session workflows
 -   project management with project.nvim
@@ -143,10 +145,15 @@ pre-installed and ready to use:
 -   **SilkCircuit** (default) — a vibrant cyberpunk theme with five
     intensity variants (neon, vibrant, soft, glow, dawn)
 -   **Neofusion** — a rich, gradient-based dark theme
--   **Neon** — a neon cyberpunk night aesthetic
 -   **Vulpes** — a warm, fox-inspired palette
+-   **Rose-pine**, **Tokyodark**, **Gore**, **Plum**, **Farout**,
+    **Eldritch**, **Night Owl**, **Boo**, **Poimandres**, **Moonfly**,
+    **Gruvbox**, **One Dark**
+-   plus LazyVim's own built-ins (Tokyonight, Catppuccin, …)
 
-Switching themes is built into LazyVim. Open the extras picker with:
+To add another one, uncomment/add a spec in `lua/plugins/theme.lua`.
+
+Switching themes is built into LazyVim. Open the colorscheme picker with:
 
 ``` text
 <leader> + u + C
@@ -168,21 +175,27 @@ developer tooling.
 
 ## 🖥️ Floating Terminals
 
-DopaVim provides quick floating terminal access for Windows shells.
+DopaVim provides quick floating terminal access with three independent
+sessions. The shell behind each key is resolved at runtime by
+`lua/custom/shells.lua`, so the same keymap means the same *thing* on
+Windows and on Linux.
 
-Three independent terminal sessions are available:
+| Key   | Slot            | Windows                       | Linux                                  |
+| ----- | --------------- | ----------------------------- | -------------------------------------- |
+| `Alt+i` | PowerShell    | `pwsh.exe`, else `powershell.exe` | `pwsh`, **warns and falls back** to `$SHELL` if missing |
+| `Alt+c` | Default shell | `cmd.exe`                     | `$SHELL` (falls back to `/bin/sh`)     |
+| `Alt+b` | Git Bash       | Git for Windows install paths | `bash`                                 |
 
--   **Alt+i** — PowerShell
--   **Alt+c** — CMD
--   **Alt+b** — Git Bash
+Notes:
 
-All terminals automatically `cd` to the current buffer's directory.
-Terminal shortcuts are intended to make running commands, checking
-builds, testing scripts, and interacting with projects require almost no
-friction.
-
-The setup also keeps terminal behavior visually consistent with the rest
-of the editor.
+-   The Git Bash slot never accepts the WSL stub in `System32` (or the
+    WindowsApps alias) as "Git Bash".
+-   If a slot cannot find its preferred shell you get a notification and a
+    working fallback instead of a dead window.
+-   Every terminal `cd`s to the current buffer's directory. `cmd.exe` uses
+    `cd /d` so changing drives works; POSIX shells get a plain `cd` with the
+    correct line ending.
+-   `Esc` leaves terminal mode; the slot's own `Alt+?` key re-toggles it.
 
 ------------------------------------------------------------------------
 
@@ -289,9 +302,10 @@ Examples include shortcuts for:
 
 -   file navigation
 -   dashboard toggle (`<leader>h`)
--   terminal access (`Alt+i`, `Alt+c`, `Alt+b`)
+-   terminal access (`Alt+i`, `Alt+c`, `Alt+b` — shells resolved per-OS)
 -   buffer navigation (`<leader>1-9`)
 -   splits (`<leader>sv`, `<leader>sh`)
+-   projects (`<leader>fp`) and plugin files (`<leader>fP`)
 -   searching
 -   deleting without polluting the yank register
 -   common editor actions
@@ -368,7 +382,11 @@ The configuration follows LazyVim's modular structure.
 ``` text
 nvim/
 ├── init.lua
-├── lazy-lock.json
+├── lazy-lock.json              # pinned plugin commits  (TRACKED — do not ignore)
+├── lazyvim.json                # LazyVim extras          (TRACKED — do not ignore)
+├── stylua.toml
+├── .gitattributes
+├── .neoconf.json
 │
 ├── lua/
 │   ├── config/
@@ -378,23 +396,47 @@ nvim/
 │   │   └── options.lua
 │   │
 │   ├── custom/
-│   │   ├── terminal.lua            -- PowerShell floating terminal
-│   │   ├── cmd_terminal.lua        -- CMD floating terminal
-│   │   ├── gitbash_terminal.lua    -- Git Bash floating terminal
-│   │   └── theme_persistence.lua   -- Save/restore last theme
+│   │   ├── shells.lua              # per-OS shell resolution
+│   │   ├── floating_term.lua       # shared floating terminal engine
+│   │   ├── terminal.lua            # Alt+i  PowerShell slot
+│   │   ├── cmd_terminal.lua        # Alt+c  default-shell slot
+│   │   ├── gitbash_terminal.lua    # Alt+b  Git Bash slot
+│   │   └── theme_persistence.lua   # Save/restore last theme
+│   │
+│   ├── dopavim/
+│   │   └── health.lua              # :checkhealth dopavim
 │   │
 │   └── plugins/
 │       ├── browse-telescope.lua
 │       ├── dashboard.lua
-│       ├── lsp.lua
 │       ├── lint.lua
+│       ├── lsp.lua
+│       ├── nvim-docx.lua
 │       ├── oil.lua
-│       ├── project.lua           -- project.nvim integration
+│       ├── pdfview.lua
+│       ├── project.lua             # project.nvim integration
 │       ├── theme.lua
 │       └── treesitter.lua
 │
+├── scripts/
+│   ├── install.ps1                 # Windows installer
+│   └── install.sh                  # Linux/macOS installer
+│
+├── images/
 └── README.md
 ```
+
+Two files in that tree are what make a clone reproduce your setup, and
+both are deliberately **tracked**:
+
+-   `lazyvim.json` — the enabled LazyVim extras (languages, dashboard,
+    Telescope, yanky, …). Without it a fresh clone silently loses most of
+    the distribution.
+-   `lazy-lock.json` — the exact commit of every plugin. Without it a fresh
+    clone installs whatever `HEAD` happens to be that day.
+
+If you run `:Lazy sync` or toggle anything in `:LazyExtras`, commit the
+resulting changes.
 
 The important distinction is that DopaVim does **not** replace LazyVim's
 architecture.
@@ -419,7 +461,7 @@ Dashboard
    ├── Projects ──────────> project.nvim
    ├── Recent files ──────> Telescope
    ├── Sessions ──────────> Session manager
-   ├── Terminal ──────────> PowerShell / CMD / Git Bash
+   ├── Terminal ──────────> PowerShell / default shell / Git Bash
    └── Configuration ─────> Neovim config
 ```
 
@@ -440,54 +482,120 @@ Everything should be reachable from the keyboard.
 
 ## Prerequisites
 
--   **Neovim 0.12.4** or newer
--   **Git**
--   A **Nerd Font**
--   Windows environment with PowerShell/CMD/Git Bash if the terminal
-    configuration is to be reproduced exactly
+DopaVim is a LazyVim distribution, and `nvim-treesitter` runs on its
+`main` branch, so the bar is a little higher than a stock Neovim setup.
 
-A Nerd Font such as **JetBrains Mono Nerd Font** is recommended.
+| Requirement | Why | Windows | Linux |
+| --- | --- | --- | --- |
+| **Neovim ≥ 0.12.0** | `nvim-treesitter` main-branch hard requirement | `winget install Neovim.Neovim` | distro package / [bob](https://github.com/MordechaiHadad/bob) |
+| **Git ≥ 2.19** | lazy.nvim partial clones | `winget install Git.Git` | `apt/dnf/pacman install git` |
+| **ripgrep (`rg`)** | live grep in the picker | `scoop install ripgrep` | `apt install ripgrep` |
+| **C compiler** | treesitter compiles parsers | MSYS2/MinGW, LLVM or VS Build Tools | `build-essential` / `base-devel` |
+| **tree-sitter-cli ≥ 0.26.1** | treesitter installs parsers — use a package manager, **not npm** | `scoop install tree-sitter` | `pacman -S tree-sitter`, `apt install tree-sitter-cli` |
+| **`tar` + `curl`** | treesitter downloads | both ship with Windows 10+ | preinstalled |
+| **Nerd Font** | icons everywhere | e.g. JetBrains Mono Nerd Font | same |
+| `fd` *(recommended)* | faster file finding | `scoop install fd` | `apt install fd-find` |
+| `pwsh` *(optional)* | the `Alt+i` slot on Linux | built in on Windows 10/11 | `apt install powershell` |
+| `pandoc` *(optional)* | `.docx` editing (`nvim-docx`) | `winget install JohnMacFarlane.Pandoc` | `apt install pandoc` |
+| `pdftotext` *(optional)* | `PDFview` text extraction | `scoop install poppler` | `apt install poppler-utils` |
+| `node` *(optional)* | `markdown-preview.nvim` | `winget install OpenJS.NodeJS.LTS` | `apt install nodejs` |
+
+You do not have to guess. After installing, run:
+
+``` vim
+:checkhealth dopavim
+```
+
+It probes every item above **on that machine** and prints an
+`ERROR`/`WARNING` for anything that is missing, with the install command
+for your OS.
 
 ------------------------------------------------------------------------
 
-## Windows Installation
-(currently only built and tried on windows, so idk if it works on linux)
+## Quick install
 
-### 1. Back up your existing configuration (if any)
-
-If your Neovim is already configured, run the following
-commands to back it up:
-
-``` powershell
-Rename-Item "$env:LOCALAPPDATA\nvim" "$env:LOCALAPPDATA\nvim.bak"
-Rename-Item "$env:LOCALAPPDATA\nvim-data" "$env:LOCALAPPDATA\nvim-data.bak"
-```
-
-> Back up anything you want to keep before running the below commands.
-
-### 2. Clone DopaVim
+### Windows (PowerShell)
 
 ``` powershell
 git clone https://github.com/musaeed178-uio/nvim-config.git "$env:LOCALAPPDATA\nvim"
-```
-
-### 3. Start Neovim
-
-``` powershell
 nvim
 ```
 
-Lazy.nvim should bootstrap the required plugins automatically.
+Or use the installer script, which backs up anything already in
+`%LOCALAPPDATA%\nvim` and restores the pinned plugins:
 
-Allow the initial installation to finish.
+``` powershell
+git clone https://github.com/musaeed178-uio/nvim-config.git "$env:TEMP\dopavim"
+powershell -ExecutionPolicy Bypass -File "$env:TEMP\dopavim\scripts\install.ps1"
+```
 
-### 4. Synchronize plugins if necessary
+### Linux / macOS
 
-Inside Neovim:
+``` bash
+git clone https://github.com/musaeed178-uio/nvim-config.git "${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+nvim
+```
+
+Or the installer script:
+
+``` bash
+git clone https://github.com/musaeed178-uio/nvim-config.git /tmp/dopavim
+/tmp/dopavim/scripts/install.sh
+```
+
+> If you use `NVIM_APPNAME` to keep multiple configurations, clone to
+> `${XDG_CONFIG_HOME:-$HOME/.config}/$NVIM_APPNAME` instead.
+
+------------------------------------------------------------------------
+
+## What happens on first launch
+
+1.  `lua/config/lazy.lua` bootstraps lazy.nvim into `stdpath("data")/lazy`.
+2.  lazy.nvim installs the **exact commits** listed in `lazy-lock.json`.
+3.  LazyVim imports the **extras** listed in `lazyvim.json`
+    (languages, Telescope, alpha dashboard, yanky, …).
+4.  Treesitter compiles the parsers declared in `lua/plugins/treesitter.lua`.
+5.  `lua/plugins/theme.lua` paints the default theme and then restores your
+    persisted one, if any.
+
+If step 2 or 4 fails it is almost always a missing prerequisite — see
+`:checkhealth dopavim`.
+
+------------------------------------------------------------------------
+
+## Keeping it reproducible
+
+`lazy-lock.json` and `lazyvim.json` are the two files that make a clone
+reproduce your setup. **Both are tracked and must never be
+re-added to `.gitignore`.**
+
+After changing plugins or extras:
 
 ``` vim
 :Lazy sync
 ```
+
+then commit the diff:
+
+``` powershell
+git add lazy-lock.json lazyvim.json
+git commit -m "Update plugin pins/extras"
+```
+
+## Upgrading
+
+``` powershell
+git -C "$env:LOCALAPPDATA\nvim" pull
+```
+
+``` bash
+git -C "${XDG_CONFIG_HOME:-$HOME/.config}/nvim" pull
+```
+
+Then, inside Neovim:
+
+-   `:Lazy restore` — snap to the newly committed pins (reproducible).
+-   `:Lazy update` — move everything forward (then commit the new pins).
 
 ------------------------------------------------------------------------
 
@@ -530,10 +638,16 @@ plugins without rewriting their entire configuration.
 
 The `lua/custom/` directory contains hand-built modules:
 
--   `terminal.lua` — PowerShell floating terminal with smart CWD
--   `cmd_terminal.lua` — CMD floating terminal with smart CWD
--   `theme_persistence.lua` — Saves and restores the last used
-    colorscheme across sessions
+-   `shells.lua` — per-OS shell resolution + `cd`/line-ending handling
+-   `floating_term.lua` — the shared floating terminal engine (window
+    geometry, cwd tracking, lifecycle, terminal-mode keymaps)
+-   `terminal.lua` — `Alt+i` PowerShell slot
+-   `cmd_terminal.lua` — `Alt+c` default-shell slot
+-   `gitbash_terminal.lua` — `Alt+b` Git Bash slot
+-   `theme_persistence.lua` — saves and restores the last used colorscheme
+    across sessions
+
+`lua/dopavim/health.lua` powers `:checkhealth dopavim`.
 
 ### Dashboard
 
@@ -546,12 +660,26 @@ lua/plugins/dashboard.lua
 
 ### Terminal configuration
 
-Terminal behavior can be customized through the terminal-related
-configuration under:
+Terminal behavior lives in:
 
 ``` text
-lua/custom/
+lua/custom/shells.lua             -- which shell each slot resolves to
+lua/custom/floating_term.lua      -- window, cwd and lifecycle behavior
+lua/custom/*_terminal.lua         -- per-slot geometry/timing tweaks
 ```
+
+Adding a new slot means adding a resolver entry in `shells.lua` and a
+three-line wrapper module.
+
+### Health check
+
+``` text
+lua/dopavim/health.lua
+```
+
+Registers `:checkhealth dopavim`. If you introduce a new external
+dependency for a plugin, add a probe there so other people cloning the
+repo find out about it automatically.
 
 The exact implementation may evolve as the configuration changes.
 
@@ -745,12 +873,15 @@ Neovim distribution.
 
 Some decisions are intentionally opinionated and may reflect:
 
--   Windows-specific workflows
--   PowerShell
+-   PowerShell-first muscle memory (the Windows workflow I live in)
 -   personal keymaps
 -   personal aesthetics
 -   personal plugin preferences
 -   my own development habits
+
+Windows 10/11 and Linux are both supported and both are exercised through
+`:checkhealth dopavim`, but Windows is where this config is developed
+daily. macOS should work; it is just untested.
 
 If you clone it, expect to modify it.
 
