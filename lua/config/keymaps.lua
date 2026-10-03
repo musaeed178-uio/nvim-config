@@ -3,24 +3,23 @@
 -- Add any additional keymaps here
 
 -------------------------------------------------------
--- Floating terminal toggle (Alt+i)
+-- Floating terminals (resolved per-OS by custom/shells.lua)
+--   Alt+i -> PowerShell  (Windows: pwsh/powershell, Linux: pwsh or fallback)
+--   Alt+c -> default shell (Windows: cmd.exe, Linux: $SHELL)
+--   Alt+b -> Git Bash / bash
 -------------------------------------------------------
-
-vim = vim
 
 vim.keymap.set("n", "<M-i>", function()
   require("custom.terminal").toggle()
-end, { desc = "Toggle floating terminal" })
+end, { desc = "Toggle PowerShell floating terminal" })
 
--- CMD split terminal toggle (Alt+c)
 vim.keymap.set("n", "<M-c>", function()
   require("custom.cmd_terminal").toggle()
-end, { desc = "Toggle CMD split terminal" })
+end, { desc = "Toggle default-shell floating terminal" })
 
--- Git Bash terminal toggle (Alt+b)
 vim.keymap.set("n", "<M-b>", function()
   require("custom.gitbash_terminal").toggle()
-end, { desc = "Toggle Git Bash terminal" })
+end, { desc = "Toggle Git Bash floating terminal" })
 
 -- Select all text
 vim.keymap.set("n", "<leader>a", "<cmd>normal! ggVG<CR>", {
@@ -49,7 +48,11 @@ vim.keymap.set("n", "<leader>sh", ":split<CR>", { desc = "Horizontal split" })
 -- vim.keymap.set("n", "<leader>th", ":LazyVimPickColorScheme<CR>", { desc = "Pick colorscheme" })
 
 -- Oil
-vim.keymap.set("n", "-", require("oil").open_float, { desc = "Open oil (file explorer)" })
+-- Wrapped in a function so a failed/slow oil.nvim install can never abort the
+-- rest of this file (the require used to be evaluated eagerly at line load).
+vim.keymap.set("n", "-", function()
+  require("oil").open_float()
+end, { desc = "Open oil (file explorer)" })
 
 -- Scroll horizontally by 6 columns instead of the default half-screen
 vim.keymap.set("n", "zh", "<Cmd>normal! 6zh<CR>", { desc = "Scroll left 6" })
