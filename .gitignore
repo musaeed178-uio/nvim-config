@@ -7,9 +7,9 @@ foo.*
 *.log
 data
 
-# Lazy.nvim plugin data (downloaded plugins)
-lazy-lock.json
-lazyvim.json
+# NOTE: lazy-lock.json and lazyvim.json MUST stay tracked — they are what
+# makes a fresh clone reproduce the exact plugin set and LazyVim extras.
+# Do not re-add them here.
 
 # Swap/backup/undo files (if you have them)
 *.swp

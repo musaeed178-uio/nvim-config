@@ -1,0 +1,17 @@
+# Normalize line endings: LF in the repo and on checkout for everything,
+# except PowerShell scripts which Windows needs as CRLF.
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
