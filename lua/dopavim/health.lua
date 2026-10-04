@@ -229,11 +229,88 @@ local function check_terminals()
   end
 end
 
+local function check_notebooks()
+  health.start("Jupyter notebooks (.ipynb)")
+
+  local py = nil
+  for _, candidate in ipairs(is_win and { "python", "python3" } or { "python3", "python" }) do
+    if has(candidate) then
+      py = candidate
+      break
+    end
+  end
+
+  if not py then
+    health.error("Python not found", {
+      "ipynb.nvim runs kernel cells through Python 3.",
+      is_win and "winget install Python.Python.3.14" or "apt/dnf/pacman install python3",
+    })
+    return
+  end
+
+  local _, raw = probe(py, "--version")
+  health.ok(("%s — %s"):format(py, ((raw or ""):gsub("%s+$", ""))))
+
+  -- List-form system() bypasses the shell, so `-c` needs no extra quoting.
+  local function imports(module)
+    vim.fn.system({ py, "-c", "import " .. module })
+    return vim.v.shell_error == 0
+  end
+
+  if imports("jupyter_client") then
+    health.ok("jupyter_client — ipynb.nvim can start a kernel")
+  else
+    health.error("jupyter_client is not installed", {
+      "ipynb.nvim cannot execute cells without it.",
+      "uv pip install --system jupyter_client ipykernel",
+    })
+  end
+
+  if imports("ipykernel") then
+    health.ok("ipykernel — a Python kernel is available")
+  else
+    health.warn("ipykernel is not installed", {
+      "Without it there is no python3 kernelspec, so Python cells cannot run.",
+      "uv pip install --system ipykernel",
+    })
+  end
+
+  if pcall(vim.treesitter.language.inspect, "ipynb") then
+    health.ok("ipynb treesitter parser compiled")
+  else
+    health.warn("ipynb treesitter parser is not compiled yet", {
+      "ipynb.nvim compiles its bundled parser once at startup.",
+      "It needs a C compiler; on Windows, tree-sitter CLI asks for cl.exe, so the",
+      "ipynb spec points CC at gcc/cc when MSVC is absent.",
+    })
+  end
+
+  local out = vim.fn.system({
+    py,
+    "-c",
+    "from jupyter_client.kernelspec import KernelSpecManager;"
+      .. " print(','.join(sorted(KernelSpecManager().find_kernel_specs())))",
+  })
+  if vim.v.shell_error == 0 then
+    local names = (out or ""):gsub("%s+$", "")
+    if names ~= "" then
+      health.ok("kernels: " .. names)
+    else
+      health.warn("no Jupyter kernels registered", { "uv pip install --system ipykernel" })
+    end
+  else
+    health.info("could not list kernels: " .. ((out or ""):gsub("%s+$", "")))
+  end
+
+  health.info("Plugin-specific checks live in :checkhealth ipynb")
+end
+
 function M.check()
   check_core()
   check_build_toolchain()
   check_finders()
   check_optional_integrations()
+  check_notebooks()
   check_terminals()
 end
 

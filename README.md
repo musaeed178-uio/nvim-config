@@ -280,6 +280,58 @@ a giant autocomplete interface.
 
 ------------------------------------------------------------------------
 
+## 📓 Jupyter Notebooks
+
+Opening an `.ipynb` file hands it to **ipynb.nvim**, which turns it into an
+actual notebook: bordered cells, an isolated buffer per cell, outputs
+rendered inline, and a kernel driven from the keyboard.
+
+``` vim
+:e analysis.ipynb
+```
+
+This is the one plugin that is *not* lazy-loaded. It claims `.ipynb` files
+with a `BufReadCmd` that has to exist before the first one is read, and
+Neovim's own `filetype.lua` maps `*.ipynb` to `json`, so there is no
+`ipynb` FileType event to wait for. Loading it costs a single `setup()`.
+
+The plugin binds its own keymaps, and only inside the notebook and cell
+buffers it owns - nothing lands in your global maps:
+
+| Keys | Does |
+| --- | --- |
+| `]]` / `[[` | next / previous cell |
+| `i` / `<Esc>` | enter / leave Cell mode |
+| `<C-CR>` | run the current cell |
+| `<S-CR>` | run it and move to the next one |
+| `<leader>ks` / `<leader>kS` | start / shut down the kernel |
+| `<leader>ko` | open the output in a float, so you can copy it |
+| `<leader>kh` / `<leader>kv` | inspect the variable under the cursor / the whole cell |
+| `<leader>kb` / `<leader>ka` | insert a cell below / above |
+
+Running cells needs Python with `jupyter_client` and `ipykernel`:
+
+``` powershell
+uv pip install --system jupyter_client ipykernel
+```
+
+`:checkhealth dopavim` probes that stack, and the plugin brings its own
+`:checkhealth ipynb`.
+
+The bundled `ipynb` tree-sitter parser is compiled once at startup and needs
+a C compiler. On Windows the tree-sitter CLI asks for `cl.exe`, which a
+MinGW-only machine does not have, so `lua/plugins/jupyter.lua` points `CC` at
+`gcc`/`cc` when MSVC is absent - no setup required.
+
+Two things stay optional. Inline image output comes from `snacks.nvim` but
+needs a terminal that speaks the kitty graphics protocol (kitty, Ghostty) -
+check with `:lua print(require("snacks").image.supports_terminal())`.
+Markdown cells are highlighted through tree-sitter injection as-is; if you
+want headings, lists and tables rendered persistently, attach
+`render-markdown.nvim` to the `ipynb` filetype.
+
+------------------------------------------------------------------------
+
 ## 🧠 Lazy Extras
 
 LazyVim's extras system is retained.
@@ -383,6 +435,7 @@ DopaVim currently revolves around:
   **LSP**              Language intelligence
   **Conform.nvim**     Formatting
   **Git tooling**      Version-control workflow
+  **ipynb.nvim**       Jupyter notebooks
 
 The exact plugin set can evolve as the configuration evolves.
 
@@ -422,12 +475,14 @@ nvim/
 │   └── plugins/
 │       ├── browse-telescope.lua
 │       ├── dashboard.lua
+│       ├── jupyter.lua             # ipynb.nvim notebooks
 │       ├── lint.lua
 │       ├── lsp.lua
 │       ├── nvim-docx.lua
 │       ├── oil.lua
 │       ├── pdfview.lua
 │       ├── project.lua             # project.nvim integration
+│       ├── telescope-fzf.lua       # optional fzf-native sorter
 │       ├── theme.lua
 │       └── treesitter.lua
 │
@@ -519,6 +574,7 @@ DopaVim is a LazyVim distribution, and `nvim-treesitter` runs on its
 | `pwsh` *(optional)* | the `Alt+i` slot on Linux | built in on Windows 10/11 | `apt install powershell` |
 | `pandoc` *(optional)* | `.docx` editing (`nvim-docx`) | `winget install JohnMacFarlane.Pandoc` | `apt install pandoc` |
 | `pdftotext` *(optional)* | `PDFview` text extraction | `scoop install poppler` | `apt install poppler-utils` |
+| `python` + `jupyter_client`, `ipykernel` *(optional)* | `.ipynb` kernel execution | `uv pip install --system jupyter_client ipykernel` | same |
 | `node` *(optional)* | `markdown-preview.nvim` | `winget install OpenJS.NodeJS.LTS` | `apt install nodejs` |
 
 You do not have to guess. After installing, run:
@@ -713,9 +769,13 @@ three-line wrapper module.
 lua/dopavim/health.lua
 ```
 
-Registers `:checkhealth dopavim`. If you introduce a new external
-dependency for a plugin, add a probe there so other people cloning the
-repo find out about it automatically.
+Registers `:checkhealth dopavim`. It currently covers the core toolchain,
+treesitter's build tools, the fuzzy finders, the optional integrations, the
+floating-terminal shells, the Python/Jupyter stack behind `.ipynb`, and the
+two tracked state files.
+
+If you introduce a new external dependency for a plugin, add a probe there so
+other people cloning the repo find out about it automatically.
 
 The exact implementation may evolve as the configuration changes.
 
