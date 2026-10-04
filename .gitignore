@@ -25,3 +25,13 @@ pack/
 # Any local testing files
 test/
 /.freebuff
+
+# Runtime state and build artifacts. These normally live in stdpath("state")
+# and stdpath("data"), but ignore them here so a stray runtime path can never
+# push them into the repo.
+shada/
+swap/
+undo/
+*.so
+*.dll
+*.pdb
