@@ -291,6 +291,19 @@ The philosophy is:
 
 > **Use what is useful. Disable what isn't.**
 
+Seventeen extras are enabled right now:
+
+-   **coding** - `yanky`
+-   **editor** - `telescope`
+-   **lang** - `dart`, `dotnet`, `git`, `java`, `json`, `markdown`, `php`,
+    `python`, `sql`, `typescript`
+-   **ui** - `alpha`, `smear-cursor`
+-   **util** - `project`, `startuptime`
+-   **vscode** - `vscode`
+
+The live list lives in `lazyvim.json`, which is tracked, so a fresh clone
+gets the same seventeen. Add or drop one with `:LazyExtras`.
+
 ------------------------------------------------------------------------
 
 ## 🛠️ Custom Keymaps
@@ -480,6 +493,14 @@ Everything should be reachable from the keyboard.
 
 # 📦 Installation
 
+## Platform support
+
+| Platform | Status | Notes |
+| --- | --- | --- |
+| **Windows 10/11** | Tested | The development platform. Every change is exercised here, on Neovim 0.12.4. |
+| **Linux** | Designed for, **untested** | Per-OS shell resolution, `install.sh` and `:checkhealth dopavim` are all written for it - but it has never actually been run. |
+| **macOS** | Untested | Nothing in the config is Windows-only, and nothing is known to be Linux-only, so it should work. Nobody has tried. |
+
 ## Prerequisites
 
 DopaVim is a LazyVim distribution, and `nvim-treesitter` runs on its
@@ -575,7 +596,22 @@ After changing plugins or extras:
 :Lazy sync
 ```
 
-then commit the diff:
+`:Lazy sync` installs what is missing, removes what is gone and **updates
+every plugin to the tip of its branch**, rewriting `lazy-lock.json` with the
+new pins. That is correct when you have deliberately changed a spec - but it
+moves you *forward*, it does not reproduce what you already had.
+
+To snap back to the pinned state instead:
+
+``` vim
+:Lazy restore
+```
+
+`restore` checks out exactly the commits in `lazy-lock.json` and leaves the
+file untouched. `sync` changes the pins; `restore` obeys them. Use
+`restore` to reproduce, `sync` to evolve.
+
+Then commit the diff (only when the change was intentional):
 
 ``` powershell
 git add lazy-lock.json lazyvim.json
@@ -879,9 +915,15 @@ Some decisions are intentionally opinionated and may reflect:
 -   personal plugin preferences
 -   my own development habits
 
-Windows 10/11 and Linux are both supported and both are exercised through
-`:checkhealth dopavim`, but Windows is where this config is developed
-daily. macOS should work; it is just untested.
+Windows 10/11 is where this config is developed and tested daily (Neovim
+0.12.4). Linux is a first-class target - the per-OS shell resolution, the
+installer and the health check are all written for it - but it has never
+actually been run, so treat it as untested. macOS should work, with the same
+caveat.
+
+`:checkhealth dopavim` probes your machine for the toolchain this config
+expects. It does not exercise editor behaviour, so a green health check is
+not proof that a platform works.
 
 If you clone it, expect to modify it.
 
