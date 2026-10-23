@@ -10,3 +10,4 @@
 vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.spellcapcheck = ""
+vim.g.autoformat = false

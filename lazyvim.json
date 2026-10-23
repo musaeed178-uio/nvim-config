@@ -2,6 +2,7 @@
   "extras": [
     "lazyvim.plugins.extras.coding.yanky",
     "lazyvim.plugins.extras.editor.telescope",
+    "lazyvim.plugins.extras.lang.clangd",
     "lazyvim.plugins.extras.lang.dart",
     "lazyvim.plugins.extras.lang.dotnet",
     "lazyvim.plugins.extras.lang.git",
