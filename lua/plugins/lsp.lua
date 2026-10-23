@@ -18,7 +18,10 @@ return {
             "--completion-style=detailed",
             "--function-arg-placeholders",
             "--fallback-style=llvm",
-            "--query-driver=C:/msys64/ucrt64/bin/gcc.exe,C:/msys64/ucrt64/bin/g++.exe,gcc,g++",
+            "--query-driver=C:/msys64/mingw64/bin/gcc.exe,C:/msys64/mingw64/bin/g++.exe,gcc,g++",
+          },
+          init_options = {
+            fallbackFlags = { "-std=c11", "-Wall", "-Wextra", "-isystem", "C:/msys64/mingw64/include" },
           },
         },
       },

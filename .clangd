@@ -4,5 +4,5 @@ CompileFlags:
     - "-Wall"
     - "-Wextra"
     - "-isystem"
-    - "C:/msys64/ucrt64/include"
-  QueryDriver: "C:/msys64/ucrt64/bin/gcc.exe,C:/msys64/ucrt64/bin/g++.exe,gcc,g++"
+    - "C:/msys64/mingw64/include"
+  QueryDriver: "C:/msys64/mingw64/bin/gcc.exe,C:/msys64/mingw64/bin/g++.exe,gcc,g++"
