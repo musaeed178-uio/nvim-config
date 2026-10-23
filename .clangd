@@ -1,3 +1,8 @@
 CompileFlags:
-  Add: [-std=c11, -Wall, -Wextra]
+  Add:
+    - "-std=c11"
+    - "-Wall"
+    - "-Wextra"
+    - "-isystem"
+    - "C:/msys64/ucrt64/include"
   QueryDriver: "C:/msys64/ucrt64/bin/gcc.exe,C:/msys64/ucrt64/bin/g++.exe,gcc,g++"
