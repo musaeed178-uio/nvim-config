@@ -15,7 +15,7 @@ return {
           function()
             vim.api.nvim_feedkeys(
               vim.api.nvim_replace_termcodes("<Plug>(Tabout)", true, true, false),
-              "n",
+              "m",
               false
             )
             return true
@@ -26,7 +26,7 @@ return {
           function()
             vim.api.nvim_feedkeys(
               vim.api.nvim_replace_termcodes("<Plug>(TaboutBack)", true, true, false),
-              "n",
+              "m",
               false
             )
             return true
