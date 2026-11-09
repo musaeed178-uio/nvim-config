@@ -15,6 +15,7 @@
     "lazyvim.plugins.extras.lang.sql",
     "lazyvim.plugins.extras.lang.typescript",
     "lazyvim.plugins.extras.ui.alpha",
+    "lazyvim.plugins.extras.ui.smear-cursor",
     "lazyvim.plugins.extras.util.gh",
     "lazyvim.plugins.extras.util.project",
     "lazyvim.plugins.extras.vscode"
