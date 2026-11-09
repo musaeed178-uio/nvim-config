@@ -8,7 +8,7 @@
 -- installed via nvim-treesitter's ensure_installed list).
 return {
   "abecodes/tabout.nvim",
-  event = "InsertCharPre",
+  event = "InsertEnter",
   dependencies = { "nvim-treesitter/nvim-treesitter" },
   opts = {
     tabkey = "<Tab>",
