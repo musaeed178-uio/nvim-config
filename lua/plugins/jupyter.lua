@@ -13,6 +13,7 @@
 return {
   {
     "ajbucci/ipynb.nvim",
+    lazy = false, -- must register BufReadCmd before first .ipynb read (see comment above)
     -- Runs before the plugin loads.
     init = function()
       -- tree-sitter CLI hard-codes cl.exe on Windows, so a MinGW-only box

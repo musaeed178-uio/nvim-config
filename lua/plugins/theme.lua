@@ -1,11 +1,103 @@
+-- Theme management: persistence (last-used theme loads on startup) and
+-- lazy cost reduction.
+--
+-- All theme plugins stay `lazy = false` so their colors/*.lua files remain
+-- in the runtimepath -- this is what makes the telescope colorscheme picker
+-- (leader + u + C) list and preview every installed theme. The win here is
+-- that NO theme has a `config` or `opts` field, so no setup() function runs
+-- at startup. Only the one theme actually applied via :colorscheme gets its
+-- colors file sourced. The only exception is silkcircuit, which needs custom
+-- highlight overrides; those are applied by a ColorScheme autocmd below, so
+-- they only run when silkcircuit is the active theme.
+
 local theme_applied = false
-local default_theme = "silkcircuit"
 local persistence = require("custom.theme_persistence")
 
---- Apply a colorscheme. Loads saved theme or falls back to default.
+-- Silkcircuit's custom setup: glow variant, visible Visual selection,
+-- LSP reference highlights, and search highlights. The integrations block
+-- disables every plugin integration to avoid conflicts with LazyVim's
+-- Snacks-based configs -- silkcircuit only paints its own colors.
+local function setup_silkcircuit()
+  pcall(function()
+    require("silkcircuit").setup({
+      variant = "glow",
+      transparent = false,
+      on_highlights = function(hl)
+        hl.Visual = { bg = "#7c3aed" }
+        hl.VisualNOS = { bg = "#5b3a8e" }
+        hl.LspReferenceText = { bg = "#4a2066", underline = true }
+        hl.LspReferenceRead = { bg = "#3a1850", underline = true }
+        hl.LspReferenceWrite = { bg = "#5a2a77", bold = true }
+        hl.IlluminatedWordText = { bg = "#4a2066", underline = true }
+        hl.IlluminatedWordRead = { bg = "#3a1850", underline = true }
+        hl.IlluminatedWordWrite = { bg = "#5a2a77", bold = true }
+        hl.CurSearch = { fg = "#0a0816", bg = "#00ffff", bold = true }
+        hl.Search = { fg = "#0a0816", bg = "#ffff00" }
+        hl.IncSearch = { fg = "#0a0816", bg = "#ff8800" }
+      end,
+      integrations = {
+        auto_detect = false,
+        treesitter = false,
+        lsp = false,
+        native_lsp = false,
+        telescope = false,
+        nvimtree = false,
+        neotree = false,
+        gitsigns = false,
+        gitgutter = false,
+        diffview = false,
+        indent_blankline = false,
+        bufferline = false,
+        lualine = false,
+        dashboard = false,
+        alpha = true,
+        which_key = false,
+        cmp = false,
+        blink_cmp = false,
+        notify = false,
+        noice = false,
+        hop = false,
+        leap = false,
+        flash = false,
+        lazy = false,
+        mason = false,
+        mini = false,
+        dap = false,
+        nvim_dap = false,
+        nvim_dap_ui = false,
+        dap_ui = false,
+        trouble = false,
+        outline = false,
+        symbols_outline = false,
+        illuminate = false,
+        aerial = false,
+        rainbow_delimiters = false,
+        ufo = false,
+        window_picker = false,
+        markdown = false,
+        snacks = false,
+        render_markdown = false,
+        octo = false,
+        avante = false,
+      },
+    })
+  end)
+end
+
+-- Apply silkcircuit's custom highlights whenever it becomes the active
+-- colorscheme -- both at startup (via apply_theme) and mid-session (when
+-- the user picks it from the telescope colorscheme picker).
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "silkcircuit",
+  callback = function()
+    setup_silkcircuit()
+  end,
+})
+
+--- Apply a colorscheme. Loads saved theme or falls back to habamax.
 --- Called from VimEnter so it runs AFTER all plugins are loaded,
 --- preventing any plugin from overriding the chosen theme.
-local function apply_theme(fallback)
+local function apply_theme()
   if theme_applied then
     return
   end
@@ -15,331 +107,48 @@ local function apply_theme(fallback)
   if saved and saved ~= "" and pcall(vim.cmd.colorscheme, saved) then
     return
   end
-  -- Never let a missing/broken default theme raise E185 at VimEnter.
-  if not pcall(vim.cmd.colorscheme, fallback or default_theme) then
-    pcall(vim.cmd.colorscheme, "habamax")
-  end
+  -- No saved theme (fresh install): fall back to habamax, a safe built-in.
+  pcall(vim.cmd.colorscheme, "habamax")
 end
 
 -- Apply theme AFTER all plugins have loaded (VimEnter fires last)
 vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
   callback = function()
-    apply_theme(default_theme)
+    apply_theme()
   end,
 })
 
 return {
-  -- Paint the default theme during LazyVim's own startup pass instead of
-  -- letting it fall back to LazyVim's built-in tokyonight. VimEnter then
-  -- swaps in the persisted theme (see apply_theme above) if it differs.
+  -- Paint the persisted theme during LazyVim's own startup pass so there is
+  -- no flash of a wrong colorscheme before VimEnter fires. Reads the saved
+  -- theme directly from disk; falls back to habamax if none exists.
   {
     "LazyVim/LazyVim",
-    opts = { colorscheme = default_theme },
-  },
-
-  {
-    "diegoulloao/neofusion.nvim",
-    -- priority = 1000,
-    config = function()
-      require("neofusion").setup({ transparent_mode = false })
+    opts = function()
+      local saved = persistence.load()
+      return { colorscheme = (saved and saved ~= "") and saved or "habamax" }
     end,
   },
 
-  {
-    "hyperb1iss/silkcircuit",
-    lazy = false,
-    -- priority = 1000,
-    config = function()
-      require("silkcircuit").setup({
-        variant = "glow", -- Options: "neon", "vibrant", "soft", "glow", "dawn"
-        transparent = false,
-        on_highlights = function(hl)
-          -- Visual selection: visible purple (overrides glow variant invisible #ff00ff44)
-          hl.Visual = { bg = "#7c3aed" }
-          hl.VisualNOS = { bg = "#5b3a8e" }
-          -- LSP/Illuminate word highlights
-          hl.LspReferenceText = { bg = "#4a2066", underline = true }
-          hl.LspReferenceRead = { bg = "#3a1850", underline = true }
-          hl.LspReferenceWrite = { bg = "#5a2a77", bold = true }
-          hl.IlluminatedWordText = { bg = "#4a2066", underline = true }
-          hl.IlluminatedWordRead = { bg = "#3a1850", underline = true }
-          hl.IlluminatedWordWrite = { bg = "#5a2a77", bold = true }
-          -- Search highlights
-          hl.CurSearch = { fg = "#0a0816", bg = "#00ffff", bold = true }
-          hl.Search = { fg = "#0a0816", bg = "#ffff00" }
-          hl.IncSearch = { fg = "#0a0816", bg = "#ff8800" }
-        end,
-        integrations = {
-          -- All integrations disabled to prevent conflicts with LazyVim's Snacks-based plugin configs.
-          -- silkcircuit still applies its colorscheme and highlights; it just won't modify other plugin specs.
-          auto_detect = false,
-          treesitter = false,
-          lsp = false,
-          native_lsp = false,
-          telescope = false,
-          nvimtree = false,
-          neotree = false,
-          gitsigns = false,
-          gitgutter = false,
-          diffview = false,
-          indent_blankline = false,
-          bufferline = false,
-          lualine = false,
-          dashboard = false,
-          alpha = true,
-          which_key = false,
-          cmp = false,
-          blink_cmp = false,
-          notify = false,
-          noice = false,
-          hop = false,
-          leap = false,
-          flash = false,
-          lazy = false,
-          mason = false,
-          mini = false,
-          dap = false,
-          nvim_dap = false,
-          nvim_dap_ui = false,
-          dap_ui = false,
-          trouble = false,
-          outline = false,
-          symbols_outline = false,
-          illuminate = false,
-          aerial = false,
-          rainbow_delimiters = false,
-          ufo = false,
-          window_picker = false,
-          markdown = false,
-          snacks = false,
-          render_markdown = false,
-          octo = false,
-          avante = false,
-        },
-      })
-    end,
-  },
-
-  -- {
-  --   "Zeioth/neon.nvim",
-  --   lazy = false,
-  --   -- priority = 1000,
-  --   opts = {
-  --     dim_inactive = false,
-  --     styles = {
-  --       comments = { italic = true },
-  --       keywords = { italic = true },
-  --     },
-  --   },
-  -- },
-
-  {
-    "ejfox/vulpes.nvim",
-    lazy = false,
-    -- priority = 1000,
-  },
-
-  {
-    "rose-pine/neovim",
-    name = "rose-pine",
-    -- config = function()
-    --   vim.cmd("colorscheme rose-pine")
-    -- end,
-  },
-
-  -- {
-  --   "EdenEast/nightfox.nvim",
-  -- },
-  --
-  -- {
-  --   "nanotech/jellybeans.vim",
-  -- },
-  --
-  -- {
-  --   "sjl/badwolf",
-  -- },
-
-  {
-    "tiagovla/tokyodark.nvim",
-  },
-
-  -- {
-  --   "ray-x/aurora",
-  --   config = function()
-  --     -- Set options directly before loading the theme
-  --     vim.g.aurora_italic = 1
-  --     vim.g.aurora_transparent = 0
-  --     vim.g.aurora_bold = 1
-  --
-  --     -- Load the colorscheme
-  --     -- vim.cmd.colorscheme("aurora")
-  --
-  --     -- Override defaults
-  --     vim.api.nvim_set_hl(0, "@number", { fg = "#e933e3" })
-  --   end,
-  -- },
-
-  -- {
-  --   "ray-x/aurora",
-  --   init = function()
-  --     vim.g.aurora_italic = 1
-  --     vim.g.aurora_transparent = 1
-  --     vim.g.aurora_bold = 1
-  --   end,
-  --   config = function()
-  --     vim.cmd.colorscheme("aurora")
-  --     -- override defaults
-  --     vim.api.nvim_set_hl(0, "@number", { fg = "#e933e3" })
-  --   end,
-  -- },
-
-  {
-    "YedTheEmo/gore.nvim",
-  },
-
-  -- {
-  --   "mitander/flume.nvim",
-  --   lazy = false,
-  --   -- priority = 1000,
-  --   config = function()
-  --     vim.opt.termguicolors = true
-  --     require("flume").setup({ schema = "dusk" })
-  --   end,
-  -- },
-
-  {
-    "takeshid/plum.nvim",
-    lazy = false,
-    -- priority = 1000,
-    opts = {
-      variant = "dark",
-    },
-  },
-
-  {
-    "thallada/farout.nvim",
-    lazy = false,
-    -- priority = 1000,
-    opts = {},
-  },
-
-  -- {
-  --   "ribru17/bamboo.nvim",
-  --   lazy = false,
-  --   -- priority = 1000,
-  --   opts = {},
-  -- },
-
-  {
-    "eldritch-theme/eldritch.nvim",
-    lazy = false,
-    -- priority = 1000,
-    opts = {},
-  },
-
-  -- {
-  --   "maxmx03/fluoromachine.nvim",
-  -- },
-
-  {
-    "oxfist/night-owl.nvim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    -- priority = 1000, -- make sure we load this before all the other start plugins
-    -- Do NOT call setup() here: night-owl's setup() runs `highlight clear` and
-    -- then sets vim.g.colors_name = "night-owl" *without* applying a single
-    -- highlight, so calling it at startup wiped the theme LazyVim had just
-    -- painted and left vim.g.colors_name lying about it (which the
-    -- night-owl Visual fix in config/autocmds.lua keys on).
-    -- `:colorscheme night-owl` already loads colors/night-owl.lua, which
-    -- applies the palette and lets Neovim set colors_name itself.
-  },
-
-  -- {
-  --   "xero/miasma.nvim",
-  --   lazy = false,
-  --   -- priority = 1000,
-  --   config = function() end,
-  -- },
-
-  -- {
-  --   "uloco/bluloco.nvim",
-  --   lazy = false,
-  --   -- priority = 1000,
-  --   dependencies = { "rktjmp/lush.nvim" },
-  --   opts = {},
-  -- },
-  --
-  -- {
-  --   "dgox16/oldworld.nvim",
-  --   lazy = false,
-  --   -- priority = 1000,
-  -- },
-
-  -- {
-  --   "luisiacc/gruvbox-baby",
-  -- },
-  --
-  -- {
-  --   "shaunsingh/moonlight.nvim",
-  -- },
-  --
-  -- {
-  --   "samharju/synthweave.nvim",
-  -- },
-
-  -- {
-  --   "datsfilipe/vesper.nvim",
-  -- },
-  --
-  -- {
-  --   "blazkowolf/gruber-darker.nvim",
-  -- },
-
-  {
-    "rockerBOO/boo-colorscheme-nvim",
-  },
-
-  -- {
-  --   "Tsuzat/NeoSolarized.nvim",
-  -- },
-
-  -- {
-  --   "embark-theme/vim",
-  --   lazy = false,
-  --   -- priority = 1000,
-  --   name = "embark",
-  -- },
-
-  {
-    "olivercederborg/poimandres.nvim",
-    lazy = false,
-    -- priority = 1000,
-    config = function()
-      require("poimandres").setup({
-        -- leave this setup function empty for default config
-        -- or refer to the configuration section
-        -- for configuration options
-      })
-    end,
-  },
-
-  {
-    "bluz71/vim-moonfly-colors",
-    name = "moonfly",
-    lazy = false,
-    -- priority = 1000,
-  },
-
-  {
-    "morhetz/gruvbox",
-  },
-
-  {
-    "navarasu/onedark.nvim",
-    -- priority = 1000, -- make sure to load this before all the other start plugins
-    opts = {
-      style = "darker",
-    },
-  },
+  -- All themes: lazy = false (keeps them in rtp for the colorscheme picker),
+  -- no config/opts (no setup() runs at startup).
+  { "diegoulloao/neofusion.nvim", lazy = false },
+  { "hyperb1iss/silkcircuit", lazy = false },
+  { "ejfox/vulpes.nvim", lazy = false },
+  { "rose-pine/neovim", name = "rose-pine", lazy = false },
+  { "tiagovla/tokyodark.nvim", lazy = false },
+  { "YedTheEmo/gore.nvim", lazy = false },
+  { "takeshid/plum.nvim", lazy = false },
+  { "thallada/farout.nvim", lazy = false },
+  { "eldritch-theme/eldritch.nvim", lazy = false },
+  -- night-owl: do NOT call setup() -- its setup() runs highlight clear and
+  -- sets g:colors_name without applying highlights, wiping the active theme.
+  -- :colorscheme night-owl already loads colors/night-owl.lua correctly.
+  { "oxfist/night-owl.nvim", lazy = false },
+  { "rockerBOO/boo-colorscheme-nvim", lazy = false },
+  { "olivercederborg/poimandres.nvim", lazy = false },
+  { "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false },
+  { "morhetz/gruvbox", lazy = false },
+  { "navarasu/onedark.nvim", lazy = false },
 }

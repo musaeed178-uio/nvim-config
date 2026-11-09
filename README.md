@@ -343,18 +343,18 @@ The philosophy is:
 
 > **Use what is useful. Disable what isn't.**
 
-Seventeen extras are enabled right now:
+Eighteen extras are enabled right now:
 
 -   **coding** - `yanky`
 -   **editor** - `telescope`
--   **lang** - `dart`, `dotnet`, `git`, `java`, `json`, `markdown`, `php`,
-    `python`, `sql`, `typescript`
--   **ui** - `alpha`, `smear-cursor`
--   **util** - `project`, `startuptime`
+-   **lang** - `cmake`, `dart`, `dotnet`, `git`, `java`, `json`, `markdown`,
+    `php`, `python`, `rust`, `sql`, `typescript`
+-   **ui** - `alpha`
+-   **util** - `gh`, `project`
 -   **vscode** - `vscode`
 
 The live list lives in `lazyvim.json`, which is tracked, so a fresh clone
-gets the same seventeen. Add or drop one with `:LazyExtras`.
+gets the same eighteen. Add or drop one with `:LazyExtras`.
 
 ------------------------------------------------------------------------
 
