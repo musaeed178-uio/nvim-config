@@ -378,6 +378,11 @@ Examples include shortcuts for:
 The configuration intentionally favors muscle memory and short command
 sequences over memorizing long command names.
 
+A complete, practical guide to every keymap in DopaVim — formatting,
+toggling autoformat, find & replace, lazygit, terminals, and the full
+Jupyter notebook keymaps — lives in [manual.md](manual.md). Press
+`<leader>?` inside Neovim to see the keymaps for whatever buffer you are in.
+
 ------------------------------------------------------------------------
 
 ## 🏠 Custom Dashboard
